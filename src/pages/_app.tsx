@@ -6,13 +6,15 @@ import UserProvider from '@/modules/auth/providers/UserProvider'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <UserProvider>
         <Navbar />
-        <Component {...pageProps} />
+        <main className="flex flex-col mx-auto grow w-full max-w-5xl px-6">
+          <Component {...pageProps} />
+        </main>
         <Footer />
       </UserProvider>
-    </>
+    </div>
   )
 }
 

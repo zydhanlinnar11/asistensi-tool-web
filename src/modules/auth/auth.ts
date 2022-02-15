@@ -30,5 +30,5 @@ export async function handleCallback() {
     localStorage.setItem('token', access_token)
   }
 
-  Router.push('/')
+  // Router.push('/')
 }
