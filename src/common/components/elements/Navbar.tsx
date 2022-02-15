@@ -1,11 +1,11 @@
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn } from '@/modules/auth/auth'
+import { useUser } from '@/modules/auth/providers/UserProvider'
 import Link from 'next/link'
 
 const navigation = [{ name: 'Home', href: '/', passHref: false }]
 
 export default function Navbar() {
-  const { data: session } = useSession()
-  const user = session?.user
+  const { user, signOut } = useUser()
 
   return (
     <nav
