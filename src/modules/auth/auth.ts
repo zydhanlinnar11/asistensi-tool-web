@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next'
 import Router from 'next/router'
 
 export function signIn() {
@@ -20,15 +19,4 @@ export function signIn() {
   url.searchParams.append('scope', 'openid profile email')
 
   Router.push(url)
-}
-
-export async function handleCallback() {
-  const urlArr = document.URL.split('#')
-  const url = new URL(`${urlArr[0]}?${urlArr[1]}`)
-  const access_token = url.searchParams.get('access_token')
-  if (access_token) {
-    localStorage.setItem('token', access_token)
-  }
-
-  // Router.push('/')
 }
