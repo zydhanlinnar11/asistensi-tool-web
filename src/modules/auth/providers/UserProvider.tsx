@@ -17,7 +17,11 @@ interface UserContextInterface {
   signOut: () => void
 }
 
-const UserContext = React.createContext<UserContextInterface | null>(null)
+const UserContext = React.createContext<UserContextInterface>({
+  user: null,
+  isUserFetched: false,
+  signOut: () => {},
+})
 
 const UserProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
