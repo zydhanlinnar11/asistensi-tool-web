@@ -1,4 +1,4 @@
-import { signOut, useSession } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 const navigation = [{ name: 'Home', href: '/', passHref: false }]
@@ -29,16 +29,12 @@ export default function Navbar() {
             ))}
             {!user && (
               <li>
-                <Link href="/login">
-                  <a>Log in</a>
-                </Link>
+                <button onClick={() => signIn()}>Log in</button>
               </li>
             )}
             {user && (
               <li>
-                <form onSubmit={() => signOut()}>
-                  <button type="submit">Log out</button>
-                </form>
+                <button onClick={() => signOut()}>Log out</button>
               </li>
             )}
           </ul>
