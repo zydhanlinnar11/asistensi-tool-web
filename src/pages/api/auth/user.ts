@@ -14,7 +14,7 @@ type Data = {
 type AdditionalData = {
   nrp: string
   kelas: string
-  role: string
+  role: 'asdos'
 }
 
 type Asdos = {
@@ -64,7 +64,6 @@ export default async function handler(
       },
     })
   } catch (error) {
-    console.error(error)
     res.status(401).json({ status: 'error', message: 'Unauthenticated.' })
   }
 }
