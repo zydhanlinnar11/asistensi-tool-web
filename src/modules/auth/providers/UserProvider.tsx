@@ -6,7 +6,7 @@ export interface User {
   picture: string
   nrp?: string
   kelas?: string
-  role?: string
+  role?: 'asdos'
 }
 
 interface UserContextInterface {
