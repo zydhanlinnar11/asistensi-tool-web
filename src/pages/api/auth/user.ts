@@ -64,11 +64,12 @@ export default async function handler(
       },
     })
   } catch (error) {
+    console.error(error)
     res.status(401).json({ status: 'error', message: 'Unauthenticated.' })
   }
 }
 
-async function getAsdosDataDownloadUrl() {
+async function getAsdosData() {
   if (!process.env.ASDOS_DATASOURCE || !process.env.DATASOURCE_API_TOKEN)
     throw new Error()
 
@@ -78,20 +79,19 @@ async function getAsdosDataDownloadUrl() {
     },
   })
 
-  const download_url: string = (await response.json())[0]['download_url']
-  return download_url
-}
+  const { encoding, content }: { encoding: string; content: string } =
+    await response.json()
 
-async function getAsdosData() {
-  const downloadUrl = await getAsdosDataDownloadUrl()
-  const response = await fetch(downloadUrl)
-  const data: Asdos[] = await response.json()
+  if (encoding !== 'base64') return null
+
+  const data: Asdos[] = JSON.parse(Buffer.from(content, 'base64').toString())
 
   return data
 }
 
 async function getAdditionalAsdosDataByEmail(email: string) {
   const asdosData = await getAsdosData()
+  if (!asdosData) return null
   const filteredData = asdosData.filter((asdos) => asdos.email === email)
 
   if (filteredData.length !== 1) return null
