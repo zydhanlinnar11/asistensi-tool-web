@@ -3,12 +3,8 @@ import React, { useContext, useEffect, useState } from 'react'
 export interface User {
   id: string
   email: string
-  verified_email: boolean
   name: string
-  given_name: string
-  family_name: string
   picture: string
-  locale: string
 }
 
 interface UserContextInterface {
@@ -50,13 +46,15 @@ const UserProvider: React.FC = ({ children }) => {
     const token = localStorage.getItem('token')
 
     try {
-      const response = await fetch(
-        `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${token}`
-      )
-      if (response.status !== 200) {
+      const response = await fetch(`/api/auth/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (!response.ok) {
         return null
       }
-      const json: User = await response.json()
+      const json: User = (await response.json())['data']['user']
 
       return json
     } catch (error) {
