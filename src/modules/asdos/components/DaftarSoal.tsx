@@ -14,7 +14,7 @@ const DaftarSoal: FC<Props> = ({ mataKuliah }) => {
   const { user } = useUser()
 
   return (
-    <>
+    <div>
       <Head>
         <title>
           Daftar Soal - {mataKuliah.nama} {mataKuliah.tahunAjar}
@@ -25,8 +25,14 @@ const DaftarSoal: FC<Props> = ({ mataKuliah }) => {
           midText="Daftar Soal"
           bottomText={`${mataKuliah.nama} ${user?.kelas} ${mataKuliah.tahunAjar}`}
         ></Header>
+        <div className="my-auto text-center">
+          <h1 className="text-4xl">Tidak ada soal</h1>
+          <p className="mt-3 text-gray-400">
+            Belum ada soal / praktikum di kelas ini
+          </p>
+        </div>
       </PrivateRoute>
-    </>
+    </div>
   )
 }
 export default DaftarSoal
@@ -34,7 +40,6 @@ export default DaftarSoal
 export const getStaticProps: GetStaticProps = async () => {
   const res = await fetch(`${process.env.BASE_URL}/api/mata-kuliah/info`)
   const mataKuliah: MataKuliah = await res.json()
-  console.log(mataKuliah)
 
   return {
     props: {
