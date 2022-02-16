@@ -1,20 +1,25 @@
-import type { NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
 import Header from '@/common/components/elements/Header'
 import { useUser } from '@/modules/auth/providers/UserProvider'
 import PrivateRoute from './PrivateRoute'
-import Link from 'next/link'
 import Card from '@/common/components/elements/Card'
+import MataKuliah from '@/common/types/MataKuliah'
 
-const Dashboard: NextPage = () => {
+type Props = {
+  mataKuliah: MataKuliah
+}
+
+const Dashboard: NextPage<Props> = ({ mataKuliah }) => {
   const { user } = useUser()
 
   return (
     <PrivateRoute>
       <div>
         <Head>
-          <title>Dashboard Asisten - Struktur Data 2022</title>
+          <title>
+            Dashboard Asisten - {mataKuliah.nama} {mataKuliah.tahunAjar}
+          </title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
@@ -36,3 +41,14 @@ const Dashboard: NextPage = () => {
 }
 
 export default Dashboard
+
+export const getStaticProps: GetStaticProps = async () => {
+  const res = await fetch(`${process.env.BASE_URL}/api/mata-kuliah/info`)
+  const mataKuliah: MataKuliah = await res.json()
+
+  return {
+    props: {
+      mataKuliah,
+    },
+  }
+}
