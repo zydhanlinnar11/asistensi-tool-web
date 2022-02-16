@@ -10,7 +10,7 @@ const PrivateRoute: FC = ({ children }) => {
 
   return (
     <div className="my-auto">
-      {isUserFetched ? children : <SpinnerLoading />}
+      {isUserFetched && user ? children : <SpinnerLoading />}
     </div>
   )
 }
