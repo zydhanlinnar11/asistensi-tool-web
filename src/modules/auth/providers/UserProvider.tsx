@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 
 export interface User {
-  id: string
   email: string
   name: string
   picture: string
+  nrp?: string
+  kelas?: string
+  role?: string
 }
 
 interface UserContextInterface {
