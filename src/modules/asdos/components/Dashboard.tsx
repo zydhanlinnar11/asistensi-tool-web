@@ -30,7 +30,7 @@ const Dashboard: NextPage<Props> = ({ mataKuliah }) => {
 
         <div className="text-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto gap-12 mb-14">
           <Card
-            href="/asdos/daftar-soal"
+            href="/asdos/soal"
             title="Daftar soal"
             description={`Lihat soal-soal pada praktikum kelas ${user?.kelas}.`}
           />
@@ -43,7 +43,9 @@ const Dashboard: NextPage<Props> = ({ mataKuliah }) => {
 export default Dashboard
 
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/mata-kuliah/info`)
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/mata-kuliah/info`
+  )
   const mataKuliah: MataKuliah = await res.json()
 
   return {
