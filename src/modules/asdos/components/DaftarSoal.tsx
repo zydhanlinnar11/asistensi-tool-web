@@ -42,7 +42,7 @@ const DaftarSoal: FC<Props> = ({ mataKuliah }) => {
             </p>
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 pb-5">
             {daftarSoal.map((soal) => (
               <DaftarSoalCard soal={soal} key={soal.slug} />
             ))}
