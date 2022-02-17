@@ -4,4 +4,5 @@ export default interface Soal {
   authorEmail?: string
   contestSlug: string
   modul: '1' | '2' | '3' | '4' | 'final'
+  isEditorialAvailable?: boolean
 }
