@@ -39,12 +39,12 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const code = req.query['code']
-  const returned_state = req.query['state']
+  // const returned_state = req.query['state']
   if (
     !code ||
-    !returned_state ||
-    Array.isArray(code) ||
-    Array.isArray(returned_state)
+    // !returned_state ||
+    Array.isArray(code)
+    // Array.isArray(returned_state)
   ) {
     res.redirect('/auth/error/state')
     return
