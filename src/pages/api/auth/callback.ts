@@ -88,7 +88,7 @@ export default async function handler(
         date.getSeconds() + json.expires_in
       )}; Path=/; Secure; HttpOnly; SameSite=Strict`
     )
-    // res.redirect(state.redirectUrl)
+    res.redirect(process.env.NEXT_PUBLIC_BASE_URL ?? 'https://asdos.zydhan.xyz')
   } catch (e) {
     res.redirect('/auth/error/state')
     return
