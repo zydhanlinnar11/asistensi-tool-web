@@ -1,3 +1,4 @@
+import mataKuliah from '@/common/data/MataKuliah'
 import { signIn } from '@/modules/auth/auth'
 import { useUser } from '@/modules/auth/providers/UserProvider'
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons'
@@ -25,7 +26,9 @@ export default function Navbar() {
       <div className="flex justify-between h-[52px] my-0 mx-auto py-0 max-w-5xl px-6">
         <Link href="/">
           <a className="my-auto font-semibold text-lg">
-            <h1>Struktur Data 2022</h1>
+            <h1>
+              {mataKuliah.nama} {mataKuliah.tahunAjar}
+            </h1>
           </a>
         </Link>
         <nav className="z-20 my-auto text-sm block">
