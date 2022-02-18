@@ -1,6 +1,7 @@
 import { signIn } from '@/modules/auth/auth'
 import { useUser } from '@/modules/auth/providers/UserProvider'
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons'
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Menu, Transition } from '@headlessui/react'
 import Image from 'next/image'
@@ -31,13 +32,13 @@ export default function Navbar() {
           <ul className="flex gap-x-8">
             <Menu as="div" className="ml-3 relative">
               <div>
-                <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                <Menu.Button className="bg-gray-800 flex text-sm rounded-full">
                   <span className="sr-only">Open user menu</span>
                   {user?.picture ? (
                     <Image
                       width={32}
                       height={32}
-                      className="h-8 w-8 rounded-full"
+                      className="h-8 w-8 rounded-full hover:opacity-75 transition duration-150 ease-in-out"
                       src={user.picture}
                       alt=""
                     />
@@ -57,18 +58,24 @@ export default function Navbar() {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items
+                  className="absolute origin-top-right bg-gray-900 flex
+                          flex-col right-0 w-56 mt-2 border border-white/20 rounded py-1 z-10"
+                >
                   {user && (
                     <Menu.Item>
                       {({ active }) => (
                         <a
                           href="#"
                           onClick={() => signOut()}
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
-                          )}
+                          className={`${
+                            active && 'bg-blue-600/30'
+                          } py-2 pl-3 pr-9 text-left transition-all duration-150 text-base`}
                         >
+                          <FontAwesomeIcon
+                            icon={faArrowRightFromBracket}
+                            className="mr-2"
+                          ></FontAwesomeIcon>
                           Sign out
                         </a>
                       )}
@@ -80,11 +87,14 @@ export default function Navbar() {
                         <a
                           href="#"
                           onClick={() => signIn()}
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
-                          )}
+                          className={`${
+                            active && 'bg-blue-600/30'
+                          } py-2 pl-3 pr-9 text-left transition-all duration-150 text-base`}
                         >
+                          <FontAwesomeIcon
+                            icon={faArrowRightFromBracket}
+                            className="mr-2"
+                          ></FontAwesomeIcon>
                           Sign in
                         </a>
                       )}
