@@ -1,6 +1,6 @@
 import Header from '@/common/components/elements/Header'
 import Markdown from '@/common/components/elements/Markdown'
-import MataKuliah from '@/common/types/MataKuliah'
+import mataKuliah, { MataKuliah } from '@/common/data/MataKuliah'
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { GetStaticPaths, GetStaticProps } from 'next'
@@ -94,11 +94,6 @@ export const getStaticProps: GetStaticProps = async (req) => {
     return {
       notFound: true,
     }
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/mata-kuliah/info`
-  )
-  const mataKuliah: MataKuliah = await res.json()
 
   const resDetailSoal = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/asdos/detail-soal?contest-slug=${contestSlug}&slug=${slug}`

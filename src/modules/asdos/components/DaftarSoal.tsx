@@ -1,14 +1,13 @@
 import Header from '@/common/components/elements/Header'
 import SpinnerLoading from '@/common/components/elements/SpinnerLoading'
-import MataKuliah from '@/common/types/MataKuliah'
 import { useUser } from '@/modules/auth/providers/UserProvider'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import React, { FC } from 'react'
 import useDaftarSoal from '@/modules/asdos/hooks/useDaftarSoal'
 import PrivateRoute from '@/modules/asdos/components/PrivateRoute'
-import Soal from '../types/Soal'
 import DaftarSoalCard from './DaftarSoalCard'
+import mataKuliah, { MataKuliah } from '@/common/data/MataKuliah'
 
 type Props = {
   mataKuliah: MataKuliah
@@ -55,11 +54,6 @@ const DaftarSoal: FC<Props> = ({ mataKuliah }) => {
 export default DaftarSoal
 
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/mata-kuliah/info`
-  )
-  const mataKuliah: MataKuliah = await res.json()
-
   return {
     props: {
       mataKuliah,
