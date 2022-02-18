@@ -8,9 +8,7 @@ export default function useDaftarSoal() {
     const ret: Soal[] = []
     try {
       const response = await fetch('/api/asdos/soal', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
+        credentials: 'same-origin',
       })
 
       if (!response.ok) throw new Error()

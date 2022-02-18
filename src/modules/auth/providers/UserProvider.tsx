@@ -33,7 +33,6 @@ const UserProvider: React.FC = ({ children }) => {
 
   function updateUser(updatedUser: User | null) {
     if (!updatedUser) {
-      localStorage.removeItem('token')
       setUser(null)
       setUserFetched(true)
       return
@@ -45,13 +44,9 @@ const UserProvider: React.FC = ({ children }) => {
   }
 
   async function getUserFromToken() {
-    const token = localStorage.getItem('token')
-
     try {
       const response = await fetch(`/api/auth/user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: 'same-origin',
       })
       if (!response.ok) {
         return null
@@ -65,7 +60,6 @@ const UserProvider: React.FC = ({ children }) => {
   }
 
   function signOut() {
-    localStorage.removeItem('token')
     updateUser(null)
   }
 

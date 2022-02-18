@@ -19,9 +19,7 @@ const DaftarSoalCard: FC<Props> = ({ soal }) => {
       url.searchParams.append('slug', soal.slug)
 
       const response = await fetch(url.toString(), {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
+        credentials: 'same-origin',
       })
 
       if (!response.ok) throw new Error()

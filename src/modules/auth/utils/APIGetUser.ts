@@ -55,14 +55,8 @@ async function getAdditionalAsdosDataByEmail(email: string) {
 }
 
 export async function getUser(req: NextApiRequest) {
-  const authorizationHeader = req.headers.authorization
-
-  if (!authorizationHeader) {
-    return null
-  }
-
   try {
-    const token = authorizationHeader.split(' ')[1]
+    const token = req.cookies['access_token']
     const response = await fetch(
       `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${token}`
     )
