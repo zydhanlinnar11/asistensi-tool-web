@@ -16,7 +16,7 @@ interface HackerRankDetailSoal {
 
 interface HackerRankEditorial {
   model?: {
-    approach_markdown?: string
+    approach?: string
     setter_code_markdown?: string
   }
 }
@@ -80,7 +80,6 @@ async function getDataBySoal(slug: string, contestSlug: string) {
 
     const hackerrank_editorial: HackerRankEditorial =
       await responseEditorial.json()
-    console.log(hackerrank_editorial)
 
     const data: DetailSoal = {
       authorUsername: author_name,
@@ -90,7 +89,7 @@ async function getDataBySoal(slug: string, contestSlug: string) {
       name,
       slug,
       code: hackerrank_editorial.model?.setter_code_markdown,
-      editorialMarkdown: hackerrank_editorial.model?.approach_markdown,
+      editorialHtml: hackerrank_editorial.model?.approach,
     }
 
     return data

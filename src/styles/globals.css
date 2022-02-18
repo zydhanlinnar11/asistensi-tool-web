@@ -7,7 +7,8 @@
 .challenge_constraints_title,
 .challenge_sample_input_title,
 .challenge_sample_output_title,
-.challenge_explanation_title {
+.challenge_explanation_title,
+.editorial h2 {
   border-bottom-width: 1px;
   border-bottom-color: rgb(255 255 255 / 0.24);
   margin-top: 1.5rem;
@@ -18,7 +19,8 @@
   font-weight: 500;
 }
 
-.hackdown-content code {
+.hackdown-content code,
+.editorial code {
   padding-top: 0.25rem /* 4px */;
   padding-bottom: 0.25rem /* 4px */;
   padding-left: 0.5rem /* 8px */;
@@ -30,7 +32,8 @@
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
 }
 
-.hackdown-content pre {
+.hackdown-content pre,
+.editorial pre {
   padding: 0.5rem /* 8px */;
   font-size: 0.875rem /* 14px */;
   line-height: 1.25rem /* 20px */;
@@ -39,7 +42,8 @@
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
 }
 
-.hackdown-content blockquote {
+.hackdown-content blockquote,
+.editorial blockquote {
   display: flex;
   column-gap: 0.5rem;
   --tw-text-opacity: 1;
@@ -54,22 +58,27 @@
   background-color: rgb(56 189 248 / 0.1);
 }
 
-.hackdown-content a {
+.hackdown-content a,
+.editorial a {
   position: relative;
   color: rgb(96 165 250 / var(--tw-text-opacity));
 }
 
 .hackdown-content a:visited,
-.hackdown-content a:visited::after {
+.hackdown-content a:visited::after,
+.editorial a:visited,
+.editorial a:visited::after {
   color: rgb(99 102 241 / var(--tw-text-opacity));
   background-color: rgb(99 102 241 / var(--tw-text-opacity));
 }
 
-.hackdown-content a:hover::after {
+.hackdown-content a:hover::after,
+.editorial a:hover::after {
   transform: scaleX(1);
 }
 
-.hackdown-content a::after {
+.hackdown-content a::after,
+.editorial a::after {
   content: '';
   height: 2px;
   width: 100%;
@@ -83,33 +92,38 @@
   transition-duration: 300ms;
 }
 
-.hackdown-content blockquote p {
+.hackdown-content blockquote p,
+.editorial blockquote p {
   margin-top: auto;
   margin-bottom: auto;
 }
 
-.hackdown-content blockquote::before {
+.hackdown-content blockquote::before,
+.editorial blockquote::before {
   margin-top: auto;
   margin-bottom: auto;
   content: url('/circle-exclamation-solid.svg');
   margin-bottom: -0.0625rem;
 }
 
-.hackdown-content ul {
+.hackdown-content ul,
+.editorial ul {
   list-style-type: disc;
   list-style-position: inside;
   padding-left: 1rem;
   margin-bottom: 1rem;
 }
 
-.hackdown-content ol {
+.hackdown-content ol,
+.editorial ol {
   list-style-type: decimal;
   list-style-position: inside;
   padding-left: 1rem;
   margin-bottom: 1rem;
 }
 
-.hackdown-content p {
+.hackdown-content p,
+.editorial p {
   margin-bottom: 1rem;
   margin-top: 0;
 }
