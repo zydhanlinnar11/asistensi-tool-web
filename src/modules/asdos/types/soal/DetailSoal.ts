@@ -5,6 +5,6 @@ export default interface DetailSoal {
   authorUsername: string
   bodyHtml: string
   isEditorialAvailable: boolean
-  editorialMarkdown?: string
+  editorialHtml?: string
   code?: string
 }
