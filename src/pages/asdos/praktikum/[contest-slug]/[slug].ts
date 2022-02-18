@@ -1,5 +1,1 @@
-export {
-  default,
-  getStaticProps,
-  getStaticPaths,
-} from '@/modules/asdos/components/DetailSoal'
+export { default } from '@/modules/asdos/components/DetailSoal'

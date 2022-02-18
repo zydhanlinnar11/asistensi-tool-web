@@ -1,16 +1,12 @@
-import type { GetStaticProps, NextPage } from 'next'
+import type { NextPage } from 'next'
 import Head from 'next/head'
 import Header from '@/common/components/elements/Header'
 import { useUser } from '@/modules/auth/providers/UserProvider'
 import PrivateRoute from './PrivateRoute'
 import Card from '@/common/components/elements/Card'
-import mataKuliah, { MataKuliah } from '@/common/data/MataKuliah'
+import mataKuliah from '@/common/data/MataKuliah'
 
-type Props = {
-  mataKuliah: MataKuliah
-}
-
-const Dashboard: NextPage<Props> = ({ mataKuliah }) => {
+const Dashboard: NextPage = () => {
   const { user } = useUser()
 
   return (
@@ -41,11 +37,3 @@ const Dashboard: NextPage<Props> = ({ mataKuliah }) => {
 }
 
 export default Dashboard
-
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {
-      mataKuliah,
-    },
-  }
-}

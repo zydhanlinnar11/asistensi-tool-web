@@ -1,1 +1,1 @@
-export { default, getStaticProps } from '@/modules/asdos/components/Dashboard'
+export { default } from '@/modules/asdos/components/Dashboard'

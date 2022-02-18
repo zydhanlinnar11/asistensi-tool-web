@@ -1,1 +1,1 @@
-export { default, getStaticProps } from '@/modules/asdos/components/DaftarSoal'
+export { default } from '@/modules/asdos/components/DaftarSoal'

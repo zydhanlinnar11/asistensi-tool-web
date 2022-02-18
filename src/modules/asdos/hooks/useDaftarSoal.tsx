@@ -1,28 +1,17 @@
-import { useEffect, useState } from 'react'
+import useSWR, { Fetcher } from 'swr'
 import Soal from '../types/Soal'
 
+const fetcher: Fetcher<Soal[]> = (url: string) =>
+  fetch(url, { credentials: 'same-origin' })
+    .then((res) => res.json())
+    .then((val) => val.data.soal)
+
 export default function useDaftarSoal() {
-  const [daftarSoal, setDaftarSoal] = useState<Soal[]>()
+  const { data, error } = useSWR('/api/asdos/soal', fetcher)
 
-  async function fetchDaftarSoal() {
-    const ret: Soal[] = []
-    try {
-      const response = await fetch('/api/asdos/soal', {
-        credentials: 'same-origin',
-      })
-
-      if (!response.ok) throw new Error()
-
-      const soal: Soal[] = (await response.json()).data.soal
-      setDaftarSoal(soal)
-    } catch (e) {
-      setDaftarSoal(ret)
-    }
+  return {
+    daftarSoal: data,
+    isLoading: !error && !data,
+    isError: error,
   }
-
-  useEffect(() => {
-    fetchDaftarSoal()
-  }, [])
-
-  return daftarSoal
 }

@@ -1,45 +1,14 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC } from 'react'
 import Soal from '@/modules/asdos/types/Soal'
-import { AdditionalData } from '@/modules/asdos/types/soal/AdditionalData'
 import Link from 'next/link'
+import useSoalLengkap from '../hooks/useSoalLengkap'
 
 interface Props {
   soal: Soal
 }
 
 const DaftarSoalCard: FC<Props> = ({ soal }) => {
-  const [soalLengkap, setSoalLengkap] = useState<Soal>(soal)
-
-  async function getAdditionalData() {
-    try {
-      const url = new URL(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/asdos/data-soal-tambahan`
-      )
-      url.searchParams.append('contest-slug', soal.contestSlug)
-      url.searchParams.append('slug', soal.slug)
-
-      const response = await fetch(url.toString(), {
-        credentials: 'same-origin',
-      })
-
-      if (!response.ok) throw new Error()
-
-      const json: AdditionalData = (await response.json())['data']['soal']
-      const { contestSlug, modul, name, slug } = soal
-      setSoalLengkap({
-        contestSlug,
-        modul,
-        name,
-        slug,
-        isEditorialAvailable: json.isEditorialAvailable,
-        authorEmail: json.authorName,
-      })
-    } catch (e) {}
-  }
-
-  useEffect(() => {
-    getAdditionalData()
-  }, [])
+  const { soalLengkap, isError, isLoading } = useSoalLengkap(soal)
 
   return (
     <Link href={`/asdos/praktikum/${soal.contestSlug}/${soal.slug}`}>
