@@ -1,11 +1,20 @@
 import { signIn } from '@/modules/auth/auth'
 import { useUser } from '@/modules/auth/providers/UserProvider'
+import { faCircleUser } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Menu, Transition } from '@headlessui/react'
+import Image from 'next/image'
 import Link from 'next/link'
+import { Fragment } from 'react'
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ')
+}
 
 const navigation = [{ name: 'Home', href: '/', passHref: false }]
 
 export default function Navbar() {
-  const { user, signOut } = useUser()
+  const { user, signOut, isUserFetched } = useUser()
 
   return (
     <nav
@@ -18,25 +27,72 @@ export default function Navbar() {
             <h1>Struktur Data 2022</h1>
           </a>
         </Link>
-        <nav className="z-20 my-auto text-sm hidden sm:block">
+        <nav className="z-20 my-auto text-sm block">
           <ul className="flex gap-x-8">
-            {navigation.map((item) => (
-              <li key={item.name}>
-                <Link href={item.href} passHref={item.passHref}>
-                  <a>{item.name}</a>
-                </Link>
-              </li>
-            ))}
-            {!user && (
-              <li>
-                <button onClick={() => signIn()}>Log in</button>
-              </li>
-            )}
-            {user && (
-              <li>
-                <button onClick={() => signOut()}>Log out</button>
-              </li>
-            )}
+            <Menu as="div" className="ml-3 relative">
+              <div>
+                <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                  <span className="sr-only">Open user menu</span>
+                  {user?.picture ? (
+                    <Image
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 rounded-full"
+                      src={user.picture}
+                      alt=""
+                    />
+                  ) : (
+                    <span className="text-gray-300">
+                      <FontAwesomeIcon icon={faCircleUser} size={'2x'} />
+                    </span>
+                  )}
+                </Menu.Button>
+              </div>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  {user && (
+                    <Menu.Item>
+                      {({ active }) => (
+                        <a
+                          href="#"
+                          onClick={() => signOut()}
+                          className={classNames(
+                            active ? 'bg-gray-100' : '',
+                            'block px-4 py-2 text-sm text-gray-700'
+                          )}
+                        >
+                          Sign out
+                        </a>
+                      )}
+                    </Menu.Item>
+                  )}
+                  {!user && (
+                    <Menu.Item>
+                      {({ active }) => (
+                        <a
+                          href="#"
+                          onClick={() => signIn()}
+                          className={classNames(
+                            active ? 'bg-gray-100' : '',
+                            'block px-4 py-2 text-sm text-gray-700'
+                          )}
+                        >
+                          Sign in
+                        </a>
+                      )}
+                    </Menu.Item>
+                  )}
+                </Menu.Items>
+              </Transition>
+            </Menu>
           </ul>
         </nav>
       </div>
