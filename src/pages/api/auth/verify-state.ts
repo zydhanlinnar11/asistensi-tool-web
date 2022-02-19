@@ -80,17 +80,12 @@ export default async function handler(
       await response.json()
 
     const date = new Date()
-    res.setHeader(
-      'Set-Cookie',
+    res.setHeader('Set-Cookie', [
       `access_token=${json.access_token}; Expires=${date.setSeconds(
         date.getSeconds() + json.expires_in
-      )}; Path=/; Secure; HttpOnly; SameSite=Strict`
-    )
-
-    res.setHeader(
-      'Set-Cookie',
-      `openid_state=; Expires=${new Date()}; Path=/; Secure; HttpOnly; SameSite=Strict`
-    )
+      )}; Path=/; Secure; HttpOnly; SameSite=Strict`,
+      `openid_state=; Expires=${new Date()}; Path=/; Secure; HttpOnly; SameSite=Strict`,
+    ])
 
     res.redirect(state.redirectUrl)
   } catch (e) {
