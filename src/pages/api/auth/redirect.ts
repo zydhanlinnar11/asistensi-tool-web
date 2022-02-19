@@ -42,9 +42,19 @@ export default async function handler(
     url.searchParams.append('response_type', 'code')
     url.searchParams.append('scope', 'openid profile email')
     url.searchParams.append('state', state.state)
+    const filesDir = join(__dirname, '_files')
+
+    if (!existsSync(filesDir)) {
+      mkdirSync(filesDir, { recursive: true })
+    }
+    const openIDStateDir = join(filesDir, 'openid-state')
+
+    if (!existsSync(openIDStateDir)) {
+      mkdirSync(openIDStateDir, { recursive: true })
+    }
 
     writeFileSync(
-      join(__dirname, `openid-state-${state.state}.json`),
+      join(openIDStateDir, `${state.state}.json`),
       JSON.stringify(state)
     )
 
