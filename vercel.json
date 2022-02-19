@@ -1,9 +1,9 @@
 {
   "functions": {
-    "src/pages/api/auth/callback.ts": {
+    "api/auth/callback.ts": {
       "includeFiles": "_files/**"
     },
-    "src/pages/api/auth/redirect.ts": {
+    "api/auth/redirect.ts": {
       "includeFiles": "_files/**"
     }
   }
