@@ -1,10 +1,10 @@
 {
   "functions": {
     "src/pages/api/auth/callback.ts": {
-      "includeFiles": "**"
+      "includeFiles": "_files/openid-state/**"
     },
     "src/pages/api/auth/redirect.ts": {
-      "includeFiles": "**"
+      "includeFiles": "_files/openid-state/**"
     }
   }
 }
