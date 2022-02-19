@@ -45,7 +45,7 @@ export default async function handler(
     const dir = join(__dirname, '_files', 'openid-state')
 
     if (!existsSync(dir)) {
-      mkdirSync(dir)
+      mkdirSync(dir, { recursive: true })
     }
     writeFileSync(join(dir, `${state.state}.json`), JSON.stringify(state))
 
