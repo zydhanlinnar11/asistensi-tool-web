@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/auth/callback.ts": {
+      "includeFiles": "_files/**"
+    },
+    "api/auth/redirect.ts": {
+      "includeFiles": "_files/**"
+    }
+  }
+}
