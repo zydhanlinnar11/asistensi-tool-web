@@ -10,7 +10,7 @@ interface Props {
 
 const VerifyState: FC<Props> = ({ code, state }) => {
   useEffect(() => {
-    Router.push(`/api/auth/verify-state?code=${code}&state=${state}`)
+    Router.replace(`/api/auth/verify-state?code=${code}&state=${state}`)
   }, [])
 
   return (
