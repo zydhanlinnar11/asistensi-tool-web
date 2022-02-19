@@ -3,9 +3,8 @@ import OAuth2State from '@/modules/auth/types/OAuth2State'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { URL } from 'url'
 import { v4 as uuidv4 } from 'uuid'
-import { JsonDB } from 'node-json-db'
-import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
 import { join } from 'path'
+import { writeFileSync } from 'fs'
 
 type Data = {
   status: 'success' | 'fail' | 'error'
@@ -44,16 +43,16 @@ export default async function handler(
     url.searchParams.append('scope', 'openid profile email')
     url.searchParams.append('state', state.state)
 
-    const db = new JsonDB(
-      new Config(join(__dirname, '_files', 'AuthDatabase'), true, false, '/')
+    writeFileSync(
+      join(__dirname, '_files', 'openid-state', `${state.state}.json`),
+      JSON.stringify(state)
     )
-    db.push(`/openid-state/${state.state}`, JSON.stringify(state))
 
     res
       .status(200)
       .json({ status: 'success', data: { redirectUrl: url.toString() } })
   } catch (e) {
-    res.status(500).json({ status: 'error', message: 'Internal server error' })
+    res.status(500).json({ status: 'error', message: `${e}` })
     return
   }
 }

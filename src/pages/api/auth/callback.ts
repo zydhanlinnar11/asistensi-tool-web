@@ -3,30 +3,34 @@ import { User } from '@/modules/auth/providers/UserProvider'
 import OAuth2State from '@/modules/auth/types/OAuth2State'
 import { join } from 'path'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { JsonDB } from 'node-json-db'
-import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+import { readFileSync, unlinkSync } from 'fs'
 
 function verifyState(returned_state: string) {
-  const db = new JsonDB(
-    new Config(join(__dirname, '_files', 'AuthDatabase'), true, false, '/')
-  )
-  const dataPath = `/openid-state/${returned_state}`
-  const stringifiedState = db.getData(dataPath)
-  db.delete(dataPath)
-  if (!stringifiedState || !returned_state) return null
-  const state: OAuth2State = JSON.parse(stringifiedState)
-  state.expiredOn = new Date(state.expiredOn)
-
   try {
+    const openIDStateFilePath = join(
+      __dirname,
+      '_files',
+      'openid-state',
+      `${returned_state}.json`
+    )
+    const openIDStateFile = readFileSync(openIDStateFilePath)
+    const stringifiedState = openIDStateFile.toString()
+    unlinkSync(openIDStateFilePath)
+    if (!stringifiedState || !returned_state) return null
+
+    const state: OAuth2State = JSON.parse(stringifiedState)
+    state.expiredOn = new Date(state.expiredOn)
     new URL(state.redirectUrl)
+    if (
+      state.state !== returned_state ||
+      state.expiredOn.getTime() < Date.now()
+    )
+      return null
+
+    return state
   } catch (e) {
     return null
   }
-
-  if (state.state !== returned_state || state.expiredOn.getTime() < Date.now())
-    return null
-
-  return state
 }
 
 type Data = {
