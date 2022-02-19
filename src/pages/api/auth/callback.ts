@@ -1,33 +1,30 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { User } from '@/modules/auth/providers/UserProvider'
 import OAuth2State from '@/modules/auth/types/OAuth2State'
-import { join } from 'path'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { JsonDB } from 'node-json-db'
-import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
+// import { JsonDB } from 'node-json-db'
+// import { Config } from 'node-json-db/dist/lib/JsonDBConfig'
 
-function verifyState(returned_state: string) {
-  const db = new JsonDB(
-    new Config(join(__dirname, '_files', 'AuthDatabase'), true, false, '/')
-  )
-  const dataPath = `/openid-state/${returned_state}`
-  const stringifiedState = db.getData(dataPath)
-  db.delete(dataPath)
-  if (!stringifiedState || !returned_state) return null
-  const state: OAuth2State = JSON.parse(stringifiedState)
-  state.expiredOn = new Date(state.expiredOn)
+// function verifyState(returned_state: string) {
+//   const db = new JsonDB(new Config('AuthDatabase', true, false, '/'))
+//   const dataPath = `/openid-state/${returned_state}`
+//   const stringifiedState = db.getData(dataPath)
+//   db.delete(dataPath)
+//   if (!stringifiedState || !returned_state) return null
+//   const state: OAuth2State = JSON.parse(stringifiedState)
+//   state.expiredOn = new Date(state.expiredOn)
 
-  try {
-    new URL(state.redirectUrl)
-  } catch (e) {
-    return null
-  }
+//   try {
+//     new URL(state.redirectUrl)
+//   } catch (e) {
+//     return null
+//   }
 
-  if (state.state !== returned_state || state.expiredOn.getTime() < Date.now())
-    return null
+//   if (state.state !== returned_state || state.expiredOn.getTime() < Date.now())
+//     return null
 
-  return state
-}
+//   return state
+// }
 
 type Data = {
   status: 'success' | 'fail' | 'error'
@@ -42,22 +39,22 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const code = req.query['code']
-  const returned_state = req.query['state']
+  // const returned_state = req.query['state']
   if (
     !code ||
-    !returned_state ||
-    Array.isArray(code) ||
-    Array.isArray(returned_state)
+    // !returned_state ||
+    Array.isArray(code)
+    // Array.isArray(returned_state)
   ) {
     res.redirect('/auth/error/state')
     return
   }
 
-  const state = verifyState(returned_state)
-  if (!state) {
-    res.redirect('/auth/error/state')
-    return
-  }
+  // const state = verifyState(returned_state)
+  // if (!state) {
+  //   res.redirect('/auth/error/state')
+  //   return
+  // }
 
   try {
     const oauthUrl = new URL('https://oauth2.googleapis.com/token')
@@ -91,7 +88,7 @@ export default async function handler(
         date.getSeconds() + json.expires_in
       )}; Path=/; Secure; HttpOnly; SameSite=Strict`
     )
-    res.redirect(state.redirectUrl)
+    res.redirect(process.env.NEXT_PUBLIC_BASE_URL ?? 'https://asdos.zydhan.xyz')
   } catch (e) {
     res.redirect('/auth/error/state')
     return
