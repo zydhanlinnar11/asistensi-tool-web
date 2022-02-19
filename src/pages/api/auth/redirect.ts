@@ -53,7 +53,7 @@ export default async function handler(
       .status(200)
       .json({ status: 'success', data: { redirectUrl: url.toString() } })
   } catch (e) {
-    res.status(500).json({ status: 'error', message: 'Internal server error' })
+    res.status(500).json({ status: 'error', message: `${e}` })
     return
   }
 }
