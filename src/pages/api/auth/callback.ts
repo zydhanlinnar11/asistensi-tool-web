@@ -8,10 +8,7 @@ import { readFileSync, unlinkSync } from 'fs'
 function verifyState(returned_state: string) {
   try {
     const openIDStateFilePath = join(
-      __dirname,
-      '_files',
-      'openid-state',
-      `${returned_state}.json`
+      join(__dirname, `openid-state-${returned_state}.json`)
     )
     const openIDStateFile = readFileSync(openIDStateFilePath)
     const stringifiedState = openIDStateFile.toString()
