@@ -18,6 +18,8 @@ export default function getContestSlugByModulAndKelas(
   modul: availableModul,
   kelas: availableKelas
 ) {
-  if (modul !== 'final') return `sd${kelas.toLowerCase()}-m${modul}-2021`
-  else return 'dasprog-fp-2021'
+  if (modul === '1' || modul === '2')
+    return `sd${kelas.toLowerCase()}-m${modul}`
+  else if (modul !== 'final') return `sd${kelas.toLowerCase()}-m${modul}-2021`
+  else return 'sd-fp-2021'
 }
