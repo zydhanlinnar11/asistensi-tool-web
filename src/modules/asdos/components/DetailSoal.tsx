@@ -2,13 +2,12 @@ import Header from '@/common/components/elements/Header'
 import Markdown from '@/common/components/elements/Markdown'
 import SpinnerLoading from '@/common/components/elements/SpinnerLoading'
 import mataKuliah from '@/common/data/MataKuliah'
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import useSoal from '../hooks/useSoal'
 import DetailSoal from '../types/soal/DetailSoal'
+import EditorialAlert from './DetailSoal/EditorialAlert'
 import PrivateRoute from './PrivateRoute'
 
 const DetailSoal: FC = () => {
@@ -41,22 +40,8 @@ const DetailSoal: FC = () => {
             />
             <div>
               <div className="bg-white/[0.24] h-px w-full"></div>
-              {!soal.isEditorialAvailable && (
-                <div
-                  className="flex gap-x-2 py-2 px-4 rounded-md
-            text-red-500 bg-red-300/[0.15] mt-4"
-                >
-                  <FontAwesomeIcon
-                    className="my-auto"
-                    icon={faCircleExclamation}
-                  ></FontAwesomeIcon>
-                  <p>
-                    Soal ini belum memiliki editorial, mohon menambahkan
-                    editorial
-                  </p>
-                </div>
-              )}
               <div className={`text-left pb-2 px-2 max-w-full break-words`}>
+                <EditorialAlert soal={soal} />
                 <h2 className="border-b border-b-white/[0.24] mt-6 mb-4 text-2xl pb-2 font-bold">
                   Description
                 </h2>
