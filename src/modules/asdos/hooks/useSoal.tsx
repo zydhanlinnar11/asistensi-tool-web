@@ -6,9 +6,9 @@ const fetcher: Fetcher<DetailSoal> = (url: string) =>
     .then((res) => res.json())
     .then((val) => val.data.soal)
 
-export default function useSoal(contestSlug: string, slug: string) {
+export default function useSoal(modul: string, slug: string) {
   const { data, error } = useSWR(
-    `/api/asdos/detail-soal?contest-slug=${contestSlug}&slug=${slug}`,
+    `/api/asdos/detail-soal?modul=${modul}&slug=${slug}`,
     fetcher
   )
 

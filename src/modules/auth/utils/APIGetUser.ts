@@ -47,7 +47,7 @@ async function getAdditionalAsdosDataByEmail(email: string) {
 
   const asdos = filteredData[0]
   const additionalData: AdditionalData = {
-    kelas: asdos.kelas.toUpperCase(),
+    kelas: asdos.kelas,
     nrp: `${asdos.nrp}`,
     role: 'asdos',
   }

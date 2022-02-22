@@ -12,10 +12,10 @@ import PrivateRoute from './PrivateRoute'
 
 const DetailSoal: FC = () => {
   const router = useRouter()
-  const contestSlug = router.query['contest-slug'] as unknown as string
+  const modul = router.query['modul'] as unknown as string
   const slug = router.query['slug'] as unknown as string
 
-  const { isError, isLoading, soal } = useSoal(contestSlug, slug)
+  const { isError, isLoading, soal } = useSoal(modul, slug)
 
   return (
     <>

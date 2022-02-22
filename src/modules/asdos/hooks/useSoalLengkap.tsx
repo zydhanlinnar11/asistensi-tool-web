@@ -14,19 +14,17 @@ interface ReturnValue {
 }
 
 export default function useSoalLengkap({
-  contestSlug,
   modul,
   name,
   slug,
 }: Soal): ReturnValue {
   const { data, error } = useSWR(
-    `/api/asdos/data-soal-tambahan?contest-slug=${contestSlug}&slug=${slug}`,
+    `/api/asdos/data-soal-tambahan?modul=${modul}&slug=${slug}`,
     fetcher
   )
 
   return {
     soalLengkap: {
-      contestSlug,
       modul,
       name,
       slug,

@@ -1,3 +1,7 @@
+import { availableKelas, isValidKelas } from '@/common/data/Kelas'
+import getContestSlugByModulAndKelas, {
+  availableModul,
+} from '@/common/data/PortalPraktikum'
 import Soal from '@/modules/asdos/types/Soal'
 import { getUser } from '@/modules/auth/utils/APIGetUser'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -19,15 +23,13 @@ type Data = {
   message?: string
 }
 
-const FINAL_SLUG = 'dasprog-fp-2021'
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
   const user = await getUser(req)
 
-  if (!user?.kelas) {
+  if (!user?.kelas || !isValidKelas(user.kelas)) {
     res.status(401).send({ status: 'fail', message: 'Unauthenticated.' })
     return
   }
@@ -40,18 +42,48 @@ export default async function handler(
   })
 }
 
-async function getDaftarSoalSemuaModul(kelas: string) {
+async function getDaftarSoalSemuaModul(kelas: availableKelas) {
   const ret: Soal[] = []
 
-  ret.push(...(await getDaftarSoalByModul(`sd${kelas}-m4-2021`, '4')))
+  ret.push(
+    ...(await getDaftarSoalByModul(
+      getContestSlugByModulAndKelas('1', kelas),
+      '1'
+    ))
+  )
 
-  return [...ret, ...(await getDaftarSoalByModul(FINAL_SLUG, 'final'))]
+  ret.push(
+    ...(await getDaftarSoalByModul(
+      getContestSlugByModulAndKelas('2', kelas),
+      '2'
+    ))
+  )
+
+  ret.push(
+    ...(await getDaftarSoalByModul(
+      getContestSlugByModulAndKelas('3', kelas),
+      '3'
+    ))
+  )
+
+  ret.push(
+    ...(await getDaftarSoalByModul(
+      getContestSlugByModulAndKelas('4', kelas),
+      '4'
+    ))
+  )
+
+  ret.push(
+    ...(await getDaftarSoalByModul(
+      getContestSlugByModulAndKelas('final', kelas),
+      'final'
+    ))
+  )
+
+  return ret
 }
 
-async function getDaftarSoalByModul(
-  slug: string,
-  modul: '1' | '2' | '3' | '4' | 'final'
-) {
+async function getDaftarSoalByModul(slug: string, modul: availableModul) {
   const ret: Soal[] = []
 
   try {
@@ -72,7 +104,6 @@ async function getDaftarSoalByModul(
         slug: challenge.slug,
         name: challenge.name,
         modul,
-        contestSlug: slug,
       })
     )
     return ret

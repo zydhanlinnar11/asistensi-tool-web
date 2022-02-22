@@ -1,11 +1,7 @@
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import dynamic from 'next/dynamic'
-import Image from 'next/image'
 import ReactMarkdown from 'react-markdown'
-const MarkdownSyntaxHighlighter = dynamic(
-  () => import('@/components/elements/MarkdownSyntaxHighlighter')
-)
+import MarkdownSyntaxHighlighter from '@/components/elements/MarkdownSyntaxHighlighter'
 import rehypeRaw from 'rehype-raw'
 import AnchorLink from './AnchorLink'
 

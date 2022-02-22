@@ -11,7 +11,7 @@ const DaftarSoalCard: FC<Props> = ({ soal }) => {
   const { soalLengkap, isError, isLoading } = useSoalLengkap(soal)
 
   return (
-    <Link href={`/asdos/praktikum/${soal.contestSlug}/${soal.slug}`}>
+    <Link href={`/asdos/praktikum/${soal.modul}/${soal.slug}`}>
       <a className="border border-white/20 hover:border-white/50 shadow rounded-md p-4 w-full mx-auto">
         <div className="flex space-x-4">
           <div className="text-center flex items-center">
