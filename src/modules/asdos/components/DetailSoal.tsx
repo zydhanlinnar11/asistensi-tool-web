@@ -27,34 +27,30 @@ const DetailSoal: FC = () => {
       </Head>
       <PrivateRoute>
         {isLoading ? (
-          <div className="my-auto">
+          <div className="my-24">
             <SpinnerLoading />
           </div>
         ) : !soal || isError ? (
           <></>
         ) : (
-          <>
+          <div className="print:px-8">
             <Header
               midText={soal.name}
               bottomText={`Ditulis oleh ${soal.authorUsername}`}
             />
             <div>
-              <div className="bg-white/[0.24] h-px w-full"></div>
+              <div className="bg-white/[0.24] h-px w-full print:invisible"></div>
               <div className={`text-left pb-2 px-2 max-w-full break-words`}>
                 <EditorialAlert soal={soal} />
                 <h2 className="border-b border-b-white/[0.24] mt-6 mb-4 text-2xl pb-2 font-bold">
                   Description
                 </h2>
-                <div dangerouslySetInnerHTML={{ __html: soal.bodyHtml }}></div>
-
+                <Markdown markdown={soal.bodyHtml}></Markdown>
                 <h2 className="border-b border-b-white/[0.24] mt-6 mb-4 text-2xl pb-2 font-bold">
                   Editorial
                 </h2>
-                {soal.editorialHtml && (
-                  <div
-                    className="editorial"
-                    dangerouslySetInnerHTML={{ __html: soal.editorialHtml }}
-                  ></div>
+                {soal.editorialHtml && soal.isEditorialAvailable && (
+                  <Markdown markdown={soal.editorialHtml}></Markdown>
                 )}
                 {(!soal.isEditorialAvailable || !soal.editorialHtml) && (
                   <div className="h-40 flex items-center justify-center">
@@ -65,7 +61,9 @@ const DetailSoal: FC = () => {
                 <h2 className="border-b border-b-white/[0.24] mt-6 mb-4 text-2xl pb-2 font-bold">
                   Source code
                 </h2>
-                {soal.code && <Markdown markdown={soal.code}></Markdown>}
+                {soal.code && soal.isEditorialAvailable && (
+                  <Markdown markdown={soal.code}></Markdown>
+                )}
                 {(!soal.isEditorialAvailable || !soal.code) && (
                   <div className="h-40 flex items-center justify-center">
                     <p>
@@ -75,7 +73,7 @@ const DetailSoal: FC = () => {
                 )}
               </div>
             </div>
-          </>
+          </div>
         )}
       </PrivateRoute>
     </>

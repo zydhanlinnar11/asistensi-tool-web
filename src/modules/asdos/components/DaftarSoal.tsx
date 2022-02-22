@@ -25,7 +25,7 @@ const DaftarSoal: FC = () => {
           bottomText={`${mataKuliah.nama} ${user?.kelas} ${mataKuliah.tahunAjar}`}
         ></Header>
         {isLoading ? (
-          <div className="my-auto">
+          <div className="my-24">
             <SpinnerLoading />
           </div>
         ) : isError ? (

@@ -9,8 +9,14 @@ const PrivateRoute: FC = ({ children }) => {
   if (isUserFetched && !user) signIn()
 
   return (
-    <div className="my-auto">
-      {isUserFetched && user ? children : <SpinnerLoading />}
+    <div>
+      {isUserFetched && user ? (
+        children
+      ) : (
+        <div className="my-24">
+          <SpinnerLoading />
+        </div>
+      )}
     </div>
   )
 }

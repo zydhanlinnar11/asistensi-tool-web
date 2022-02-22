@@ -13,8 +13,14 @@ const PrivateRoute: FC = ({ children }) => {
   }, [isUserFetched, user])
 
   return (
-    <div className="my-auto">
-      {isUserFetched && user?.role === 'asdos' ? children : <SpinnerLoading />}
+    <div>
+      {isUserFetched && user?.role === 'asdos' ? (
+        children
+      ) : (
+        <div className="my-24">
+          <SpinnerLoading />
+        </div>
+      )}
     </div>
   )
 }

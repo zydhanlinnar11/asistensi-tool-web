@@ -18,7 +18,7 @@ class MyDocument extends Document {
         <Head>
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
         </Head>
-        <body className="bg-gray-900 text-white scroll-smooth">
+        <body className="bg-gray-900 text-white scroll-smooth print:bg-white print:text-black">
           <Main />
           <NextScript />
         </body>

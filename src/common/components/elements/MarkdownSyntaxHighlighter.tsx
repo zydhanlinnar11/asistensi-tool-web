@@ -17,6 +17,8 @@ const MarkdownSyntaxHighlighter: React.FC<MarkdownSyntaxHighlighterProps> = ({
 }) => {
   return (
     <SyntaxHighlighter
+      lineProps={{ style: { wordBreak: 'break-all', whiteSpace: 'pre-wrap' } }}
+      wrapLines={true}
       style={materialOceanic}
       language={language}
       customStyle={{

@@ -2,7 +2,6 @@ import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import DetailSoal from '@/modules/asdos/types/soal/DetailSoal'
 import { FC } from 'react'
-import Link from 'next/link'
 
 interface Props {
   soal: DetailSoal
@@ -47,18 +46,15 @@ const EditorialAlert: FC<Props> = ({ soal }) => {
           ></FontAwesomeIcon>
           <p>
             Editorial sudah ada, anda dapat melihat PDF{' '}
-            <Link
-              href={`/asdos/praktikum/${soal.contestSlug}/${soal.slug}/preview-pdf`}
-            >
-              <a
-                className='relative after:content-[""] after:h-[2px] after:w-full
+            <a
+              className='relative after:content-[""] after:h-[2px] after:w-full
             after:bottom-0 after:left-0 after:scale-x-0 after:absolute after:transform
             after:duration-300 hover:after:scale-x-100 after:bg-green-500'
-              >
-                <strong>disini</strong>
-              </a>
-            </Link>
-            .
+              onClick={() => window.print()}
+            >
+              <strong className="hover:cursor-pointer">disini </strong>
+            </a>
+            (Disarankan menggunakan margin minimum).
           </p>
         </div>
       )}

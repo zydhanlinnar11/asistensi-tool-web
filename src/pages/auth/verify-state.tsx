@@ -14,7 +14,7 @@ const VerifyState: FC<Props> = ({ code, state }) => {
   }, [])
 
   return (
-    <div className="my-auto">
+    <div className="my-24">
       <SpinnerLoading />
     </div>
   )
