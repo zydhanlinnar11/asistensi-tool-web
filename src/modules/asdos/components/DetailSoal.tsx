@@ -61,31 +61,34 @@ const DetailSoal: FC = () => {
                   Description
                 </h2>
                 <Markdown markdown={soal.bodyHtml}></Markdown>
-                <h2 className="border-b border-b-white/[0.24] mt-6 mb-4 text-2xl pb-2 font-bold">
-                  Editorial
-                </h2>
-                {soal.editorialHtml && soal.isEditorialAvailable && (
-                  <Markdown markdown={soal.editorialHtml}></Markdown>
-                )}
-                {(!soal.isEditorialAvailable || !soal.editorialHtml) && (
-                  <div className="h-40 flex items-center justify-center">
-                    <p>Editorial saat ini belum dapat diakses</p>
-                  </div>
-                )}
-
-                <h2 className="border-b border-b-white/[0.24] mt-6 mb-4 text-2xl pb-2 font-bold">
-                  Source code
-                </h2>
-                {soal.code && soal.isEditorialAvailable && (
-                  <Markdown markdown={soal.code}></Markdown>
-                )}
-                {(!soal.isEditorialAvailable || !soal.code) && (
-                  <div className="h-40 flex items-center justify-center">
-                    <p>
-                      <em>Source code</em> saat ini belum dapat diakses
-                    </p>
-                  </div>
-                )}
+                <div className="break-inside-avoid">
+                  <h2 className="border-b border-b-white/[0.24] mt-6 mb-4 text-2xl pb-2 font-bold">
+                    Editorial
+                  </h2>
+                  {soal.editorialHtml && soal.isEditorialAvailable && (
+                    <Markdown markdown={soal.editorialHtml}></Markdown>
+                  )}
+                  {(!soal.isEditorialAvailable || !soal.editorialHtml) && (
+                    <div className="h-40 flex items-center justify-center">
+                      <p>Editorial saat ini belum dapat diakses</p>
+                    </div>
+                  )}
+                </div>
+                <div className="break-inside-avoid">
+                  <h2 className="border-b border-b-white/[0.24] mt-6 mb-4 text-2xl pb-2 font-bold">
+                    Source code
+                  </h2>
+                  {soal.code && soal.isEditorialAvailable && (
+                    <Markdown markdown={soal.code}></Markdown>
+                  )}
+                  {(!soal.isEditorialAvailable || !soal.code) && (
+                    <div className="h-40 flex items-center justify-center">
+                      <p>
+                        <em>Source code</em> saat ini belum dapat diakses
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
