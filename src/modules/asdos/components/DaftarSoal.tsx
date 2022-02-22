@@ -21,11 +21,6 @@ const DaftarSoal: FC = () => {
   const [modul, setModul] = useState<availableModul>('1')
   const modules = ['1', '2', '3', '4', 'final']
 
-  function setModulAndCache(modul: availableModul) {
-    setModul(modul)
-    localStorage.setItem('last_modul_filter', modul)
-  }
-
   return (
     <div>
       <Head>
@@ -40,7 +35,7 @@ const DaftarSoal: FC = () => {
             mataKuliah.tahunAjar
           }`}
         >
-          <Listbox value={modul} onChange={setModulAndCache}>
+          <Listbox value={modul} onChange={setModul}>
             {({ open }) => (
               <div className="mt-3">
                 <div className="mt-1 relative">
