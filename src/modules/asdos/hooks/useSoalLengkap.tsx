@@ -1,6 +1,7 @@
-import useSWR, { Fetcher } from 'swr'
 import Soal from '../types/Soal'
 import { AdditionalData } from '../types/soal/AdditionalData'
+import useSWRImmutable from 'swr/immutable'
+import { Fetcher } from 'swr'
 
 const fetcher: Fetcher<AdditionalData> = (url: string) =>
   fetch(url, { credentials: 'same-origin' })
@@ -18,7 +19,7 @@ export default function useSoalLengkap({
   name,
   slug,
 }: Soal): ReturnValue {
-  const { data, error } = useSWR(
+  const { data, error } = useSWRImmutable(
     `/api/asdos/data-soal-tambahan?modul=${modul}&slug=${slug}`,
     fetcher
   )

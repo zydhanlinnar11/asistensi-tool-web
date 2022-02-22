@@ -1,5 +1,6 @@
 import { availableKelas } from '@/common/data/Kelas'
-import useSWR, { Fetcher } from 'swr'
+import { Fetcher } from 'swr'
+import useSWRImmutable from 'swr/immutable'
 
 type Data = {
   nama: string
@@ -13,7 +14,7 @@ const fetcher: Fetcher<Data> = (url: string) =>
     .then((val) => val.data.asdos)
 
 export default function useAsdosFromHackerRank(username?: string) {
-  const { data, error } = useSWR(
+  const { data, error } = useSWRImmutable(
     `/api/asdos/asdos-from-hackerrank?username=${username}`,
     fetcher
   )

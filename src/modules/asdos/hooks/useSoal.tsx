@@ -1,5 +1,6 @@
-import useSWR, { Fetcher } from 'swr'
 import DetailSoal from '../types/soal/DetailSoal'
+import useSWRImmutable from 'swr/immutable'
+import { Fetcher } from 'swr'
 
 const fetcher: Fetcher<DetailSoal> = (url: string) =>
   fetch(url, { credentials: 'same-origin' })
@@ -7,7 +8,7 @@ const fetcher: Fetcher<DetailSoal> = (url: string) =>
     .then((val) => val.data.soal)
 
 export default function useSoal(modul: string, slug: string) {
-  const { data, error } = useSWR(
+  const { data, error } = useSWRImmutable(
     `/api/asdos/detail-soal?modul=${modul}&slug=${slug}`,
     fetcher
   )
