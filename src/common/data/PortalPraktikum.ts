@@ -2,7 +2,7 @@ import { availableKelas } from './Kelas'
 
 export type availableModul = '1' | '2' | '3' | '4' | 'final'
 
-export function isValidModul(modul: string | null): modul is availableModul {
+export function isValidModul(modul: string): modul is availableModul {
   switch (modul) {
     case '1':
     case '2':

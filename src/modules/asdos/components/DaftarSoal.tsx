@@ -18,10 +18,7 @@ function classNames(...classes: string[]) {
 const DaftarSoal: FC = () => {
   const { user } = useUser()
   const { daftarSoal, isError, isLoading } = useDaftarSoal()
-  const lastModulFilter = localStorage.getItem('last_modul_filter')
-  const [modul, setModul] = useState<availableModul>(
-    isValidModul(lastModulFilter) ? lastModulFilter : '1'
-  )
+  const [modul, setModul] = useState<availableModul>('1')
   const modules = ['1', '2', '3', '4', 'final']
 
   function setModulAndCache(modul: availableModul) {
