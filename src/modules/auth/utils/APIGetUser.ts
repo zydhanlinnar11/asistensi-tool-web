@@ -14,7 +14,7 @@ type Asdos = {
   nrp: number | string
   nomor_hp: number | string
   email?: string
-  hackerrank_profile_url?: string
+  hackerrank_username: string
   pj?: string
 }
 
@@ -77,5 +77,28 @@ export async function getUser(req: NextApiRequest) {
     return user
   } catch (error) {
     return null
+  }
+}
+
+export async function getAsdosKelasNRPNamaByHackerRankUsername(
+  username: string
+) {
+  const asdosData = await getAsdosData()
+  if (!asdosData) return null
+  const filteredData = asdosData.filter(
+    (asdos) => asdos.hackerrank_username === username
+  )
+
+  if (filteredData.length !== 1) return null
+
+  const asdos = filteredData[0]
+  const ret: AdditionalData = {
+    kelas: asdos.kelas,
+    nrp: `${asdos.nrp}`,
+    role: 'asdos',
+  }
+  return {
+    ...ret,
+    nama: asdos.nama,
   }
 }

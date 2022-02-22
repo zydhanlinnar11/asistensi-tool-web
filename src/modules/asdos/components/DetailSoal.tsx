@@ -4,7 +4,8 @@ import SpinnerLoading from '@/common/components/elements/SpinnerLoading'
 import mataKuliah from '@/common/data/MataKuliah'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
+import useAsdosFromHackerRank from '../hooks/useAsdosFromHackerRank'
 import useSoal from '../hooks/useSoal'
 import DetailSoal from '../types/soal/DetailSoal'
 import EditorialAlert from './DetailSoal/EditorialAlert'
@@ -16,6 +17,9 @@ const DetailSoal: FC = () => {
   const slug = router.query['slug'] as unknown as string
 
   const { isError, isLoading, soal } = useSoal(modul, slug)
+  const { isAsdosError, isAsdosLoading, asdos } = useAsdosFromHackerRank(
+    soal?.authorUsername
+  )
 
   return (
     <>
@@ -41,7 +45,13 @@ const DetailSoal: FC = () => {
                   : 'Praktikum Final'
               }
               midText={soal.name}
-              bottomText={`Ditulis oleh ${soal.authorUsername}`}
+              bottomText={`Ditulis oleh ${
+                isAsdosLoading
+                  ? '(memuat data asisten)'
+                  : !asdos
+                  ? 'bukan asisten di tahun ini'
+                  : `${asdos.nama} (${asdos.nrp})`
+              }`}
             />
             <div>
               <div className="bg-white/[0.24] h-px w-full print:invisible"></div>
