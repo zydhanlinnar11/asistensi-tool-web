@@ -35,6 +35,11 @@ const DetailSoal: FC = () => {
         ) : (
           <div className="print:px-8">
             <Header
+              topText={
+                soal.modul !== 'final'
+                  ? `Modul ${soal.modul}`
+                  : 'Praktikum Final'
+              }
               midText={soal.name}
               bottomText={`Ditulis oleh ${soal.authorUsername}`}
             />

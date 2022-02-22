@@ -21,14 +21,16 @@ const Dashboard: NextPage = () => {
 
         <Header
           midText={`Dashboard Asisten`}
-          bottomText={`Selamat datang asisten kelas ${user?.kelas}, ${user?.name} (${user?.nrp})!`}
+          bottomText={`Selamat datang asisten kelas ${user?.kelas?.toUpperCase()}, ${
+            user?.name
+          } (${user?.nrp})!`}
         />
 
         <div className="text-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mx-auto gap-12 mb-14">
           <Card
             href="/asdos/soal"
             title="Daftar soal"
-            description={`Lihat soal-soal pada praktikum kelas ${user?.kelas}.`}
+            description={`Lihat soal-soal pada praktikum kelas ${user?.kelas?.toUpperCase()}.`}
           />
         </div>
       </div>

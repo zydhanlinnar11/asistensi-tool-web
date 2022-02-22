@@ -100,6 +100,7 @@ async function getDataBySoal(
       slug,
       code: hackerrank_editorial.model?.setter_code_markdown,
       editorialHtml: hackerrank_editorial.model?.approach,
+      modul,
     }
 
     return data

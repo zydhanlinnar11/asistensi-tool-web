@@ -22,7 +22,9 @@ const DaftarSoal: FC = () => {
       <PrivateRoute>
         <Header
           midText="Daftar Soal"
-          bottomText={`${mataKuliah.nama} ${user?.kelas} ${mataKuliah.tahunAjar}`}
+          bottomText={`${mataKuliah.nama} ${user?.kelas?.toUpperCase()} ${
+            mataKuliah.tahunAjar
+          }`}
         ></Header>
         {isLoading ? (
           <div className="my-24">
