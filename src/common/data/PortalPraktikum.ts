@@ -19,7 +19,6 @@ export default function getContestSlugByModulAndKelas(
   kelas: availableKelas
 ) {
   if (modul === '1') return `alpro-its-sd-m${modul}-${kelas.toLowerCase()}-2022`
-  if (modul === '2') return `sd${kelas.toLowerCase()}-m${modul}`
   else if (modul !== 'final') return `sd${kelas.toLowerCase()}-m${modul}-2021`
   else return 'sd-fp-2021'
 }
