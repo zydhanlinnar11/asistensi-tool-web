@@ -79,7 +79,9 @@ const DetailSoal: FC = () => {
                     Source code
                   </h2>
                   {soal.code && soal.isEditorialAvailable && (
-                    <Markdown markdown={soal.code}></Markdown>
+                    <div id="editorial-code">
+                      <Markdown markdown={soal.code}></Markdown>
+                    </div>
                   )}
                   {(!soal.isEditorialAvailable || !soal.code) && (
                     <div className="h-40 flex items-center justify-center">
