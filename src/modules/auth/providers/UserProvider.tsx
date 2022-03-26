@@ -59,8 +59,19 @@ const UserProvider: React.FC = ({ children }) => {
     }
   }
 
-  function signOut() {
-    updateUser(null)
+  async function signOut() {
+    try {
+      const res = await fetch(`/api/auth/logout`, {
+        credentials: 'same-origin',
+        method: 'DELETE',
+      })
+      if (!res.ok) {
+        throw new Error(res.statusText)
+      }
+      updateUser(null)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   const value = {
