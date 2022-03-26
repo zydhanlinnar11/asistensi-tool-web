@@ -61,7 +61,7 @@ const DetailSoal: FC = () => {
                   Description
                 </h2>
                 <Markdown markdown={soal.bodyHtml}></Markdown>
-                <div className="break-inside-avoid">
+                <div className="break-inside-avoid print:hidden">
                   <h2 className="border-b border-b-white/[0.24] mt-6 mb-4 text-2xl pb-2 font-bold">
                     Editorial
                   </h2>
@@ -74,7 +74,7 @@ const DetailSoal: FC = () => {
                     </div>
                   )}
                 </div>
-                <div className="break-inside-avoid">
+                <div className="break-inside-avoid print:hidden">
                   <h2 className="border-b border-b-white/[0.24] mt-6 mb-4 text-2xl pb-2 font-bold">
                     Source code
                   </h2>
