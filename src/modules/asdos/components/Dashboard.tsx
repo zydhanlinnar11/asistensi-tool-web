@@ -16,7 +16,6 @@ const Dashboard: NextPage = () => {
           <title>
             Dashboard Asisten - {mataKuliah.nama} {mataKuliah.tahunAjar}
           </title>
-          <link rel="icon" href="/favicon.ico" />
         </Head>
 
         <Header
