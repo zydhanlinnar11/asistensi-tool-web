@@ -5,6 +5,9 @@ import Footer from '@/common/components/elements/Footer'
 import UserProvider from '@/modules/auth/providers/UserProvider'
 import favicon from '../../public/favicon.png'
 import Head from 'next/head'
+import { config } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+config.autoAddCss = false
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
