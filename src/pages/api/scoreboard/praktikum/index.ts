@@ -141,6 +141,7 @@ const populateModelsFromSubmissions: (
           }
         })
       }
+      if (team[hacker_username].challenges[challenge.slug].isSolved) return
       const isAC = status === 'Accepted'
       team[hacker_username].challenges[challenge.slug].submissions++
       if (!isAC) {
