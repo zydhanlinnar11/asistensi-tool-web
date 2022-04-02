@@ -50,12 +50,14 @@ const Table: FC<Props> = ({ problems, teams }) => {
             </td>
             <td className={clsx(styles.scoreTd, styles.teamNameTd)}>
               <div className="flex gap-x-3 items-center pl-3 pr-8">
-                <Image
-                  src={itsLogo}
-                  height={32}
-                  width={32}
-                  alt="Logo of Institut Teknologi Sepuluh Nopember"
-                />
+                <div className="block w-8 h-8">
+                  <Image
+                    src={itsLogo}
+                    height={32}
+                    width={32}
+                    alt="Logo of Institut Teknologi Sepuluh Nopember"
+                  />
+                </div>
                 <div>
                   <p>{name}</p>
                   <small className={styles.small}>{institution.name}</small>
