@@ -50,7 +50,9 @@ const PraktikumScoreboard: FC<Props> = ({ slug }) => {
                 <div className="mt-1 relative">
                   <Listbox.Button className="relative w-full border border-white/[0.24] rounded-md shadow-sm px-4 py-2 text-left cursor-default focus:ring-4 focus:ring-blue-600 focus:ring-opacity-30 focus:outline-none">
                     <span className="flex items-center">
-                      <span className="block truncate">{session}</span>
+                      <span className="block truncate capitalize">
+                        {session}
+                      </span>
                     </span>
                     <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                       <SelectorIcon
@@ -84,7 +86,7 @@ const PraktikumScoreboard: FC<Props> = ({ slug }) => {
                           {({ selected, active }) => (
                             <>
                               <div className="flex items-center">
-                                <span className="ml-3 block truncate">
+                                <span className="ml-3 block truncate capitalize">
                                   {ses}
                                 </span>
                               </div>
@@ -114,7 +116,7 @@ const PraktikumScoreboard: FC<Props> = ({ slug }) => {
           </Listbox>
         </div>
       </header>
-      <main style={{ display: 'flex', justifyContent: 'center' }}>
+      <main className="max-w-full">
         <ICPCScoreboardTable
           problems={data ? data.data.problems : []}
           teams={data ? data.data.teams : []}

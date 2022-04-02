@@ -49,15 +49,13 @@ const Table: FC<Props> = ({ problems, teams }) => {
               {rank + 1}
             </td>
             <td className={clsx(styles.scoreTd, styles.teamNameTd)}>
-              <div className="flex">
-                <div className="h-fit">
-                  <Image
-                    src={itsLogo}
-                    height={32}
-                    width={32}
-                    alt="Logo of Institut Teknologi Sepuluh Nopember"
-                  />
-                </div>
+              <div className="flex gap-x-3 items-center pl-3 pr-8">
+                <Image
+                  src={itsLogo}
+                  height={32}
+                  width={32}
+                  alt="Logo of Institut Teknologi Sepuluh Nopember"
+                />
                 <div>
                   <p>{name}</p>
                   <small className={styles.small}>{institution.name}</small>
@@ -70,8 +68,14 @@ const Table: FC<Props> = ({ problems, teams }) => {
                 getProgressClassName(score.solvedCount, totalProblems)
               )}
             >
-              <p>{score.solvedCount}</p>
-              <small className={styles.small}>{score.penalty}</small>
+              {score.penalty === 0 && score.solvedCount === 0 ? (
+                <>0</>
+              ) : (
+                <>
+                  <p>{score.solvedCount}</p>
+                  <small className={styles.small}>{score.penalty}</small>
+                </>
+              )}
             </td>
             {problems.map(
               ({

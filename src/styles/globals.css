@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --table-border-color: rgb(148 163 184/0.2);
+}
+
 .challenge_input_format_title,
 .challenge_output_format_title,
 .challenge_constraints_title,

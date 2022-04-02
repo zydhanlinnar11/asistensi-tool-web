@@ -20,7 +20,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="bg-zinc-900/25 sticky top-0 min-h-[52px] sm:h-[52px] z-10 w-full backdrop-blur-[20px] backdrop-saturate-[1.80]
+      className="bg-gray-900 sticky top-0 min-h-[52px] sm:h-[52px] z-10 w-full backdrop-blur-[20px] backdrop-saturate-[1.80]
       after:w-full after:h-px after:bg-white/[0.24] after:content-[''] after:block after:absolute after:top-full
       print:hidden"
     >
