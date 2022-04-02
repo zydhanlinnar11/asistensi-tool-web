@@ -4,7 +4,7 @@
   position: sticky;
   top: 52px;
   z-index: 1;
-  border-bottom: 1px solid var(--table-border-color);
+  border-bottom: 2px solid var(--table-border-color);
   border-left: 1px solid var(--table-border-color);
   min-width: 64px;
   font-size: 0.9rem;
