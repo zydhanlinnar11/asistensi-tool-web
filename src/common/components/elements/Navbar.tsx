@@ -66,24 +66,50 @@ export default function Navbar() {
                   className="absolute origin-top-right bg-gray-900 flex
                           flex-col right-0 w-56 mt-2 border border-white/20 rounded py-1 z-10"
                 >
-                  {user && (
-                    <Menu.Item>
-                      {({ active }) => (
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link href="/">
                         <a
-                          href="#"
-                          onClick={() => signOut()}
                           className={`${
                             active && 'bg-blue-600/30'
-                          } py-2 pl-3 pr-9 text-left transition-all duration-150 text-base`}
+                          } py-2 pl-3 pr-9 text-left transition-all duration-150 text-base hover:bg-blue-600/30`}
                         >
-                          <FontAwesomeIcon
-                            icon={faArrowRightFromBracket}
-                            className="mr-2"
-                          ></FontAwesomeIcon>
-                          Sign out
+                          Home
                         </a>
+                      </Link>
+                    )}
+                  </Menu.Item>
+                  {user && (
+                    <>
+                      {user.role === 'asdos' && (
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/asdos">
+                              <a
+                                className={`${
+                                  active && 'bg-blue-600/30'
+                                } py-2 pl-3 pr-9 text-left transition-all duration-150 text-base hover:bg-blue-600/30`}
+                              >
+                                Asdos Dashboard
+                              </a>
+                            </Link>
+                          )}
+                        </Menu.Item>
                       )}
-                    </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            href="#"
+                            onClick={() => signOut()}
+                            className={`${
+                              active && 'bg-blue-600/30'
+                            } py-2 pl-3 pr-9 text-left transition-all duration-150 text-base hover:bg-blue-600/30`}
+                          >
+                            Sign out
+                          </a>
+                        )}
+                      </Menu.Item>
+                    </>
                   )}
                   {!user && (
                     <Menu.Item>
@@ -95,10 +121,6 @@ export default function Navbar() {
                             active && 'bg-blue-600/30'
                           } py-2 pl-3 pr-9 text-left transition-all duration-150 text-base`}
                         >
-                          <FontAwesomeIcon
-                            icon={faArrowRightFromBracket}
-                            className="mr-2"
-                          ></FontAwesomeIcon>
                           Sign in
                         </a>
                       )}
