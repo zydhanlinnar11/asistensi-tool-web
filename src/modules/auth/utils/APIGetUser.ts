@@ -18,7 +18,7 @@ type Asdos = {
   pj?: string
 }
 
-async function getAsdosData() {
+export async function getAsdosData() {
   if (!process.env.ASDOS_DATASOURCE || !process.env.DATASOURCE_API_TOKEN)
     throw new Error()
 

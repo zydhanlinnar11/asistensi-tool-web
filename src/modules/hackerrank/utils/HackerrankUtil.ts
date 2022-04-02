@@ -132,7 +132,7 @@ export const convertToICPCScoreboardData: ConvertToICPCScoreboardData = (
         name: hacker,
         problems: challenges.map(
           ({ penalty, slug, submissions, time_taken }) => {
-            const isSolved = submissions > 0 && (penalty > 0 || time_taken > 0)
+            const isSolved = submissions > 0 && time_taken > 0
 
             return {
               problem: {
