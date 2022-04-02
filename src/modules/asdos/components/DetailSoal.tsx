@@ -11,7 +11,7 @@ import DetailSoal from '../types/soal/DetailSoal'
 import EditorialAlert from './DetailSoal/EditorialAlert'
 import PrivateRoute from './PrivateRoute'
 
-const DetailSoal: FC = () => {
+const DetailSoalPage: FC = () => {
   const router = useRouter()
   const modul = router.query['modul'] as unknown as string
   const slug = router.query['slug'] as unknown as string
@@ -100,4 +100,4 @@ const DetailSoal: FC = () => {
   )
 }
 
-export default DetailSoal
+export default DetailSoalPage
