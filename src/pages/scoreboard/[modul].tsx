@@ -14,6 +14,8 @@ import { Fetcher } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import clsx from 'clsx'
 import getContestSlugByModulAndKelas from '@/common/data/PortalPraktikum'
+import { NextSeo } from 'next-seo'
+import mataKuliah from '@/common/data/MataKuliah'
 
 type Props = {
   modul: availableModul
@@ -29,6 +31,8 @@ const kelas = ['a', 'b', 'c', 'e', 'f', 'iup']
 const fetcher: Fetcher<Data> = (url: string) =>
   axios.get(url).then((res) => res.data)
 
+const defaultTitle = `Scoreboard Praktikum - ${mataKuliah.nama} ${mataKuliah.tahunAjar}`
+
 const PraktikumScoreboard: FC<Props> = ({ modul }) => {
   const [session, setSession] = useState<'praktikum' | 'revisi'>('revisi')
   const [selectedKelas, setSelectedKelas] = useState(kelas[0])
@@ -42,6 +46,23 @@ const PraktikumScoreboard: FC<Props> = ({ modul }) => {
 
   return (
     <>
+      <NextSeo
+        title={data ? `Scoreboard ${data.data.contest.name}` : defaultTitle}
+        description={
+          data ? `Scoreboard ${data.data.contest.name}` : defaultTitle
+        }
+        openGraph={{
+          title: data ? `Scoreboard ${data.data.contest.name}` : defaultTitle,
+          images: [
+            {
+              url: 'https://zydhan.xyz/logo.webp',
+              height: 1080,
+              width: 1080,
+              alt: 'Animated photo of Zydhan Linnar Putra',
+            },
+          ],
+        }}
+      />
       <header
         style={{
           textAlign: 'center',
