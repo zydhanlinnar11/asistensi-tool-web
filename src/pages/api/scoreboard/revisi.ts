@@ -9,7 +9,7 @@ import getContestSlugByModulAndKelas, {
   isValidModul,
 } from '@/common/data/PortalPraktikum'
 import { isValidKelas } from '@/common/data/Kelas'
-import { writeFileSync } from 'fs'
+import { existsSync, writeFileSync } from 'fs'
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,6 +22,7 @@ export default async function handler(
 
   const modul = req.query.modul
   const kelas = req.query.kelas
+  const force = req.query.force
   if (
     typeof modul !== 'string' ||
     !isValidModul(modul) ||
@@ -33,6 +34,14 @@ export default async function handler(
   }
 
   const slug = getContestSlugByModulAndKelas(modul, kelas)
+  const filename = `./public/scoreboard/revisi/${slug}.json`
+
+  const fileExist = existsSync(filename)
+  if (force != 'true' && fileExist) {
+    res.send({ message: `Already generated ${filename}` })
+    return
+  }
+
   const scoreboard = await getScoreboardFromAPI(slug, 100)
   const contest = await getContestDataFromAPI(slug)
   const names = await getAllHackerName(scoreboard)
@@ -50,7 +59,6 @@ export default async function handler(
     data: convertToICPCScoreboardData(scoreboard, contest),
     lastUpdated,
   }
-  const filename = `./public/scoreboard/revisi/${slug}.json`
   writeFileSync(filename, JSON.stringify(data))
 
   res.send({ message: `Saved to ${filename}` })
