@@ -1,7 +1,8 @@
 import { Listbox, Transition, Tab } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
-import { isValidKelas } from '@/common/data/Kelas'
-import getContestSlugByModulAndKelas, {
+import { availableKelas, isValidKelas } from '@/common/data/Kelas'
+import getContestmodulByModulAndKelas, {
+  availableModul,
   isValidModul,
 } from '@/common/data/PortalPraktikum'
 import ICPCScoreboardTable from '@/icpc/components/elements/ICPCScoreboardTable'
@@ -12,9 +13,10 @@ import { FC, Fragment, useState } from 'react'
 import { Fetcher } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import clsx from 'clsx'
+import getContestSlugByModulAndKelas from '@/common/data/PortalPraktikum'
 
 type Props = {
-  slug: string
+  modul: availableModul
 }
 
 type Data = {
@@ -27,11 +29,14 @@ const kelas = ['a', 'b', 'c', 'e', 'f', 'iup']
 const fetcher: Fetcher<Data> = (url: string) =>
   axios.get(url).then((res) => res.data)
 
-const PraktikumScoreboard: FC<Props> = ({ slug }) => {
+const PraktikumScoreboard: FC<Props> = ({ modul }) => {
   const [session, setSession] = useState<'praktikum' | 'revisi'>('revisi')
   const [selectedKelas, setSelectedKelas] = useState(kelas[0])
   const { data, error } = useSWRImmutable(
-    `/scoreboard/${session}/${slug}.json`,
+    `/scoreboard/${session}/${getContestSlugByModulAndKelas(
+      modul,
+      selectedKelas as unknown as availableKelas
+    )}.json`,
     fetcher
   )
 
@@ -156,22 +161,14 @@ const PraktikumScoreboard: FC<Props> = ({ slug }) => {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  return { props: { slug: context.params?.slug } }
+  return { props: { modul: context.params?.modul } }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const modul = ['1', '2']
-  const slug: string[] = []
-
-  kelas.forEach((kelas) => {
-    modul.forEach((modul) => {
-      if (!isValidKelas(kelas) || !isValidModul(modul)) return
-      slug.push(getContestSlugByModulAndKelas(modul, kelas))
-    })
-  })
 
   return {
-    paths: slug.map((slug) => ({ params: { slug } })),
+    paths: modul.map((modul) => ({ params: { modul } })),
     fallback: false,
   }
 }
