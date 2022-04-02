@@ -1,4 +1,4 @@
-import { Listbox, Transition } from '@headlessui/react'
+import { Listbox, Transition, Tab } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import { isValidKelas } from '@/common/data/Kelas'
 import getContestSlugByModulAndKelas, {
@@ -22,11 +22,14 @@ type Data = {
   lastUpdated: string
 }
 
+const kelas = ['a', 'b', 'c', 'e', 'f', 'iup']
+
 const fetcher: Fetcher<Data> = (url: string) =>
   axios.get(url).then((res) => res.data)
 
 const PraktikumScoreboard: FC<Props> = ({ slug }) => {
   const [session, setSession] = useState<'praktikum' | 'revisi'>('revisi')
+  const [selectedKelas, setSelectedKelas] = useState(kelas[0])
   const { data, error } = useSWRImmutable(
     `/scoreboard/${session}/${slug}.json`,
     fetcher
@@ -115,6 +118,32 @@ const PraktikumScoreboard: FC<Props> = ({ slug }) => {
             )}
           </Listbox>
         </div>
+        <div className="w-full max-w-md px-2 pt-8 sm:px-0 mx-auto">
+          <Tab.Group
+            onChange={(index) => {
+              setSelectedKelas(kelas[index])
+            }}
+          >
+            <Tab.List className="flex p-1 space-x-1 bg-blue-900/20 rounded-xl">
+              {kelas.map((kelas) => (
+                <Tab
+                  key={kelas}
+                  className={({ selected }) =>
+                    clsx(
+                      'w-full py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg',
+                      'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60',
+                      selected
+                        ? 'bg-white shadow'
+                        : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'
+                    )
+                  }
+                >
+                  Kelas <span className="uppercase">{kelas}</span>
+                </Tab>
+              ))}
+            </Tab.List>
+          </Tab.Group>
+        </div>
       </header>
       <main className="max-w-full">
         <ICPCScoreboardTable
@@ -131,7 +160,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const kelas = ['a', 'b', 'c', 'e', 'f', 'iup']
   const modul = ['1', '2']
   const slug: string[] = []
 
