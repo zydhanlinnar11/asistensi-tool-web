@@ -23,7 +23,9 @@
       "@/utils/*": ["src/common/utils/*"],
       "@/modules/*": ["src/modules/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/styles/*": ["src/styles/*"]
+      "@/styles/*": ["src/styles/*"],
+      "@/icpc/*": ["src/modules/icpc/*"],
+      "@/hackerrank/*": ["src/modules/hackerrank/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
