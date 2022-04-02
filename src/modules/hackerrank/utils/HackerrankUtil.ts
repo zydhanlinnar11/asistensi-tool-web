@@ -1,6 +1,8 @@
 import HackerRankLeaderboardData from '@/hackerrank/types/HackerRankLeaderboardData'
 import HackerRankContest from '@/hackerrank/types/HackerRankContest'
 import ScoreboardData from '@/icpc/types/ScoreboardData'
+import HackerRankSubmissionModel from '@/hackerrank/types/HackerRankSubmissionModel'
+import HackerRankSubmission from '@/hackerrank/types/HackerRankSubmission'
 
 type GetScoreboardFromAPI = (
   contestSlug: string,
@@ -35,6 +37,67 @@ export const getContestDataFromAPI: GetContestDataFromAPI = async (
   const json = await res.json()
 
   return json.model
+}
+
+export const compileAllPagesModels: (
+  slug: string,
+  token: string
+) => Promise<HackerRankSubmissionModel[]> = async (slug, token) => {
+  const pagesCount = await getSubmissionNumberOfPages(slug, token)
+  const ret: HackerRankSubmissionModel[] = []
+  for (let i = 0; i < pagesCount; i++) {
+    const submissions = await getSubmissions(slug, token, i * 10)
+    ret.push(...submissions.models)
+  }
+
+  return ret
+}
+
+export const filterPraktikumOnly: (
+  submissions: HackerRankSubmissionModel[]
+) => HackerRankSubmissionModel[] = (submissions) => {
+  const PRAKTIKUM_DURATION_IN_MINUTES = 1440
+
+  return submissions.filter(
+    ({ in_contest_bounds, time_from_start }) =>
+      in_contest_bounds && time_from_start <= PRAKTIKUM_DURATION_IN_MINUTES
+  )
+}
+
+const getSubmissions: (
+  slug: string,
+  token: string,
+  offset: number
+) => Promise<HackerRankSubmission> = async (slug, token, offset) => {
+  const res = await fetch(
+    `https://www.hackerrank.com/rest/contests/${slug}/judge_submissions?limit=10&offset=${offset}`,
+    {
+      headers: {
+        Cookie: `remember_hacker_token=${token}`,
+      },
+    }
+  )
+  const json: HackerRankSubmission = await res.json()
+  return json
+}
+
+const getSubmissionNumberOfPages: (
+  slug: string,
+  token: string
+) => Promise<number> = async (slug, token) => {
+  const res = await fetch(
+    `https://www.hackerrank.com/rest/contests/${slug}/judge_submissions?limit=10&offset=0`,
+    {
+      headers: {
+        Cookie: `remember_hacker_token=${token}`,
+      },
+    }
+  )
+
+  const json: HackerRankSubmission = await res.json()
+  const total: number = json.total
+
+  return Math.ceil(total / 10)
 }
 
 export const convertToICPCScoreboardData: ConvertToICPCScoreboardData = (
