@@ -3,6 +3,8 @@ import Team from '@/icpc/types/Team'
 import { FC } from 'react'
 import styles from '@/styles/Table.module.css'
 import clsx from 'clsx'
+import Image from 'next/image'
+import itsLogo from '../../../../../../public/img/logo-its.png'
 
 type Props = {
   problems: Problem[]
@@ -47,8 +49,20 @@ const Table: FC<Props> = ({ problems, teams }) => {
               {rank + 1}
             </td>
             <td className={clsx(styles.scoreTd, styles.teamNameTd)}>
-              <p>{name}</p>
-              <small className={styles.small}>{institution.name}</small>
+              <div className="flex">
+                <div className="h-fit">
+                  <Image
+                    src={itsLogo}
+                    height={32}
+                    width={32}
+                    alt="Logo of Institut Teknologi Sepuluh Nopember"
+                  />
+                </div>
+                <div>
+                  <p>{name}</p>
+                  <small className={styles.small}>{institution.name}</small>
+                </div>
+              </div>
             </td>
             <td
               className={clsx(
