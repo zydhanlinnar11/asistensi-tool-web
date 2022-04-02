@@ -49,9 +49,11 @@ const PraktikumScoreboard: FC<Props> = ({ modul }) => {
           paddingBottom: '48px',
         }}
       >
-        <h1>{data ? data.data.contest.name : 'Loading'}</h1>
-        <p>Last updated: {data?.lastUpdated}</p>
-        <div className="w-full max-w-xs mx-auto">
+        <h1 className="text-2xl font-semibold">
+          {data ? data.data.contest.name : 'Loading'}
+        </h1>
+        <p className="text-slate-400 mt-2">Last updated: {data?.lastUpdated}</p>
+        <div className="w-full max-w-xs mx-auto mt-5">
           <Listbox value={session} onChange={setSession}>
             {({ open }) => (
               <div className="mt-3">
