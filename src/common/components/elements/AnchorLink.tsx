@@ -4,11 +4,17 @@ import React from 'react'
 interface AnchorLinkProps {
   href: string
   target?: string
+  replace?: boolean
 }
 
-const AnchorLink: React.FC<AnchorLinkProps> = ({ href, children, target }) => {
+const AnchorLink: React.FC<AnchorLinkProps> = ({
+  href,
+  children,
+  target,
+  replace,
+}) => {
   return (
-    <Link href={href}>
+    <Link href={href} replace={replace}>
       <a
         className="group relative text-blue-400 visited:text-indigo-500"
         target={target}

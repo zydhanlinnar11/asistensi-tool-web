@@ -181,6 +181,7 @@ const PraktikumScoreboard: FC<Props> = ({
                 href={`/scoreboard/${modul[modulIndex - 1]}/${
                   kelas[kelasIndex]
                 }/${sessions[sessionIndex]}`}
+                replace
               >
                 ← Modul {modul[modulIndex - 1]}
               </AnchorLink>
@@ -192,6 +193,7 @@ const PraktikumScoreboard: FC<Props> = ({
                 href={`/scoreboard/${modul[modulIndex + 1]}/${
                   kelas[kelasIndex]
                 }/${sessions[sessionIndex]}`}
+                replace
               >
                 Modul {modul[modulIndex + 1]} →
               </AnchorLink>
