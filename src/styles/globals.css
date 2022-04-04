@@ -6,6 +6,12 @@
   --table-border-color: rgb(148 163 184/0.2);
 }
 
+html,
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
 .challenge_input_format_title,
 .challenge_output_format_title,
 .challenge_constraints_title,

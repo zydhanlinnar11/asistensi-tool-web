@@ -16,7 +16,10 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter&display=optional"
+            rel="stylesheet"
+          ></link>
         </Head>
         <body className="bg-gray-900 text-white scroll-smooth print:bg-white print:text-black">
           <Main />
