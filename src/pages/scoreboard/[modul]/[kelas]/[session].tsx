@@ -16,8 +16,8 @@ import { readFileSync } from 'fs'
 type Props = {
   data: ScoreboardData
   lastUpdated: string
-  currKelas: availableKelas
-  currModul: availableModul
+  kelasIndex: number
+  modulIndex: number
   sessionIndex: number
 }
 
@@ -28,8 +28,8 @@ const sessions = ['praktikum', 'revisi']
 const PraktikumScoreboard: FC<Props> = ({
   data,
   lastUpdated,
-  currKelas,
-  currModul,
+  kelasIndex,
+  modulIndex,
   sessionIndex,
 }) => {
   const router = useRouter()
@@ -66,8 +66,10 @@ const PraktikumScoreboard: FC<Props> = ({
         <div className="w-full max-w-xs mx-auto mt-5">
           <Listbox
             value={sessions[sessionIndex]}
-            onChange={(index) => {
-              router.push(`/scoreboard/${currModul}/${currKelas}/${index}`)
+            onChange={(sess) => {
+              router.push(
+                `/scoreboard/${modul[modulIndex]}/${kelas[kelasIndex]}/${sess}`
+              )
             }}
           >
             {({ open }) => (
@@ -142,10 +144,10 @@ const PraktikumScoreboard: FC<Props> = ({
         </div>
         <div className="w-full max-w-md px-2 pt-8 sm:px-0 mx-auto">
           <Tab.Group
-            defaultIndex={kelas.findIndex((kelas) => kelas == currKelas)}
+            defaultIndex={kelasIndex}
             onChange={(index) => {
               router.push(
-                `/scoreboard/${currModul}/${kelas[index]}/${sessions[sessionIndex]}`
+                `/scoreboard/${modul[modulIndex]}/${kelas[index]}/${sessions[sessionIndex]}`
               )
             }}
           >
@@ -181,15 +183,15 @@ const PraktikumScoreboard: FC<Props> = ({
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  const modul = params?.modul
-  const kelas = params?.kelas
+  const currModul = params?.modul
+  const currKelas = params?.kelas
   const session = params?.session
   if (
-    typeof modul !== 'string' ||
-    typeof kelas !== 'string' ||
+    typeof currModul !== 'string' ||
+    typeof currKelas !== 'string' ||
     typeof session !== 'string' ||
-    !isValidKelas(kelas) ||
-    !isValidModul(modul)
+    !isValidKelas(currKelas) ||
+    !isValidModul(currModul)
   )
     return {
       notFound: true,
@@ -198,16 +200,20 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     const data = JSON.parse(
       readFileSync(
         `./public/scoreboard/${params?.session}/${getContestSlugByModulAndKelas(
-          modul,
-          kelas
+          currModul,
+          currKelas
         )}.json`
       ).toString()
     )
-    const idx = sessions.findIndex((sess) => sess === session)
-    if (idx === -1) return { notFound: true }
+    const sessionIndex = sessions.findIndex((sess) => sess === session)
+    if (sessionIndex === -1) return { notFound: true }
+    const kelasIndex = kelas.findIndex((kls) => kls == currKelas)
+    if (kelasIndex === -1) return { notFound: true }
+    const modulIndex = modul.findIndex((mdl) => mdl == currModul)
+    if (modulIndex === -1) return { notFound: true }
 
     return {
-      props: { ...data, currKelas: kelas, currModul: modul, sessionIndex: idx },
+      props: { ...data, sessionIndex, kelasIndex, modulIndex },
     }
   } catch (e) {
     return { notFound: true }
