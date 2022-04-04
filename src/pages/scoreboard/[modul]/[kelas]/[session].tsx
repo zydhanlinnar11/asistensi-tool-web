@@ -1,21 +1,14 @@
 import { Listbox, Transition, Tab } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import { availableKelas, isValidKelas } from '@/common/data/Kelas'
-import getContestmodulByModulAndKelas, {
-  availableModul,
-  isValidModul,
-} from '@/common/data/PortalPraktikum'
+import { availableModul, isValidModul } from '@/common/data/PortalPraktikum'
 import ICPCScoreboardTable from '@/icpc/components/elements/ICPCScoreboardTable'
 import ScoreboardData from '@/icpc/types/ScoreboardData'
-import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { FC, Fragment, useState } from 'react'
-import { Fetcher } from 'swr'
-import useSWRImmutable from 'swr/immutable'
+import { FC, Fragment } from 'react'
 import clsx from 'clsx'
 import getContestSlugByModulAndKelas from '@/common/data/PortalPraktikum'
 import { NextSeo } from 'next-seo'
-import mataKuliah from '@/common/data/MataKuliah'
 import { ParsedUrlQuery } from 'querystring'
 import { useRouter } from 'next/router'
 import { readFileSync } from 'fs'
