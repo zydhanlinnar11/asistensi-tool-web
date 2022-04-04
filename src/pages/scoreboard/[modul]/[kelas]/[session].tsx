@@ -68,7 +68,7 @@ const PraktikumScoreboard: FC<Props> = ({
           <Listbox
             value={sessions[sessionIndex]}
             onChange={(sess) => {
-              router.push(
+              router.replace(
                 `/scoreboard/${modul[modulIndex]}/${kelas[kelasIndex]}/${sess}`
               )
             }}
@@ -147,7 +147,7 @@ const PraktikumScoreboard: FC<Props> = ({
           <Tab.Group
             defaultIndex={kelasIndex}
             onChange={(index) => {
-              router.push(
+              router.replace(
                 `/scoreboard/${modul[modulIndex]}/${kelas[index]}/${sessions[sessionIndex]}`
               )
             }}
