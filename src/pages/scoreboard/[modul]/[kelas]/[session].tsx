@@ -12,6 +12,7 @@ import { NextSeo } from 'next-seo'
 import { ParsedUrlQuery } from 'querystring'
 import { useRouter } from 'next/router'
 import { readFileSync } from 'fs'
+import AnchorLink from '@/common/components/elements/AnchorLink'
 
 type Props = {
   data: ScoreboardData
@@ -173,10 +174,36 @@ const PraktikumScoreboard: FC<Props> = ({
         </div>
       </header>
       <main className="max-w-full">
-        <ICPCScoreboardTable
-          problems={data ? data.problems : []}
-          teams={data ? data.teams : []}
-        />
+        <div className="w-fit mx-auto">
+          <div className="flex justify-between w-full mx-auto mb-5">
+            {modulIndex > 0 ? (
+              <AnchorLink
+                href={`/scoreboard/${modul[modulIndex - 1]}/${
+                  kelas[kelasIndex]
+                }/${sessions[sessionIndex]}`}
+              >
+                ← Modul {modul[modulIndex - 1]}
+              </AnchorLink>
+            ) : (
+              <p>← Tidak ada modul sebelumnya</p>
+            )}
+            {modulIndex + 1 < modul.length ? (
+              <AnchorLink
+                href={`/scoreboard/${modul[modulIndex + 1]}/${
+                  kelas[kelasIndex]
+                }/${sessions[sessionIndex]}`}
+              >
+                Modul {modul[modulIndex + 1]} →
+              </AnchorLink>
+            ) : (
+              <p>Tidak ada modul setelahnya →</p>
+            )}
+          </div>
+          <ICPCScoreboardTable
+            problems={data ? data.problems : []}
+            teams={data ? data.teams : []}
+          />
+        </div>
       </main>
     </>
   )
