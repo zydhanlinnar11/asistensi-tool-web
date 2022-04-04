@@ -16,43 +16,38 @@ import clsx from 'clsx'
 import getContestSlugByModulAndKelas from '@/common/data/PortalPraktikum'
 import { NextSeo } from 'next-seo'
 import mataKuliah from '@/common/data/MataKuliah'
+import { ParsedUrlQuery } from 'querystring'
+import { useRouter } from 'next/router'
+import { readFileSync } from 'fs'
 
 type Props = {
-  modul: availableModul
-}
-
-type Data = {
   data: ScoreboardData
   lastUpdated: string
+  currKelas: availableKelas
+  currModul: availableModul
+  sessionIndex: number
 }
 
 const kelas = ['a', 'b', 'c', 'e', 'f', 'iup']
+const modul = ['1', '2']
+const sessions = ['praktikum', 'revisi']
 
-const fetcher: Fetcher<Data> = (url: string) =>
-  axios.get(url).then((res) => res.data)
-
-const defaultTitle = `Scoreboard Praktikum - ${mataKuliah.nama} ${mataKuliah.tahunAjar}`
-
-const PraktikumScoreboard: FC<Props> = ({ modul }) => {
-  const [session, setSession] = useState<'praktikum' | 'revisi'>('revisi')
-  const [selectedKelas, setSelectedKelas] = useState(kelas[0])
-  const { data, error } = useSWRImmutable(
-    `/scoreboard/${session}/${getContestSlugByModulAndKelas(
-      modul,
-      selectedKelas as unknown as availableKelas
-    )}.json`,
-    fetcher
-  )
+const PraktikumScoreboard: FC<Props> = ({
+  data,
+  lastUpdated,
+  currKelas,
+  currModul,
+  sessionIndex,
+}) => {
+  const router = useRouter()
 
   return (
     <>
       <NextSeo
-        title={data ? `Scoreboard ${data.data.contest.name}` : defaultTitle}
-        description={
-          data ? `Scoreboard ${data.data.contest.name}` : defaultTitle
-        }
+        title={`Scoreboard ${data.contest.name}`}
+        description={`Scoreboard ${data.contest.name}`}
         openGraph={{
-          title: data ? `Scoreboard ${data.data.contest.name}` : defaultTitle,
+          title: `Scoreboard ${data.contest.name}`,
           images: [
             {
               url: 'https://zydhan.xyz/logo.webp',
@@ -61,6 +56,7 @@ const PraktikumScoreboard: FC<Props> = ({ modul }) => {
               alt: 'Animated photo of Zydhan Linnar Putra',
             },
           ],
+          locale: 'id-ID',
         }}
       />
       <header
@@ -71,18 +67,23 @@ const PraktikumScoreboard: FC<Props> = ({ modul }) => {
         }}
       >
         <h1 className="text-2xl font-semibold">
-          {data ? data.data.contest.name : 'Loading'}
+          {data ? data.contest.name : 'Loading'}
         </h1>
-        <p className="text-slate-400 mt-2">Last updated: {data?.lastUpdated}</p>
+        <p className="text-slate-400 mt-2">Last updated: {lastUpdated}</p>
         <div className="w-full max-w-xs mx-auto mt-5">
-          <Listbox value={session} onChange={setSession}>
+          <Listbox
+            value={sessions[sessionIndex]}
+            onChange={(index) => {
+              router.push(`/scoreboard/${currModul}/${currKelas}/${index}`)
+            }}
+          >
             {({ open }) => (
               <div className="mt-3">
                 <div className="mt-1 relative">
                   <Listbox.Button className="relative w-full border border-white/[0.24] rounded-md shadow-sm px-4 py-2 text-left cursor-default focus:ring-4 focus:ring-blue-600 focus:ring-opacity-30 focus:outline-none">
                     <span className="flex items-center">
                       <span className="block truncate capitalize">
-                        {session}
+                        {sessions[sessionIndex]}
                       </span>
                     </span>
                     <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -148,8 +149,11 @@ const PraktikumScoreboard: FC<Props> = ({ modul }) => {
         </div>
         <div className="w-full max-w-md px-2 pt-8 sm:px-0 mx-auto">
           <Tab.Group
+            defaultIndex={kelas.findIndex((kelas) => kelas == currKelas)}
             onChange={(index) => {
-              setSelectedKelas(kelas[index])
+              router.push(
+                `/scoreboard/${currModul}/${kelas[index]}/${sessions[sessionIndex]}`
+              )
             }}
           >
             <Tab.List className="flex p-1 space-x-1 bg-blue-900/20 rounded-xl">
@@ -175,23 +179,59 @@ const PraktikumScoreboard: FC<Props> = ({ modul }) => {
       </header>
       <main className="max-w-full">
         <ICPCScoreboardTable
-          problems={data ? data.data.problems : []}
-          teams={data ? data.data.teams : []}
+          problems={data ? data.problems : []}
+          teams={data ? data.teams : []}
         />
       </main>
     </>
   )
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  return { props: { modul: context.params?.modul } }
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+  const modul = params?.modul
+  const kelas = params?.kelas
+  const session = params?.session
+  if (
+    typeof modul !== 'string' ||
+    typeof kelas !== 'string' ||
+    typeof session !== 'string' ||
+    !isValidKelas(kelas) ||
+    !isValidModul(modul)
+  )
+    return {
+      notFound: true,
+    }
+  try {
+    const data = JSON.parse(
+      readFileSync(
+        `./public/scoreboard/${params?.session}/${getContestSlugByModulAndKelas(
+          modul,
+          kelas
+        )}.json`
+      ).toString()
+    )
+    const idx = sessions.findIndex((sess) => sess === session)
+    if (idx === -1) return { notFound: true }
+
+    return {
+      props: { ...data, currKelas: kelas, currModul: modul, sessionIndex: idx },
+    }
+  } catch (e) {
+    return { notFound: true }
+  }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const modul = ['1', '2']
-
+  const paths: { params: ParsedUrlQuery }[] = []
+  modul.forEach((modul) =>
+    kelas.forEach((kelas) =>
+      sessions.forEach((session) =>
+        paths.push({ params: { modul, kelas, session } })
+      )
+    )
+  )
   return {
-    paths: modul.map((modul) => ({ params: { modul } })),
+    paths: paths,
     fallback: false,
   }
 }
