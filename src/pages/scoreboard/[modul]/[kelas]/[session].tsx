@@ -5,7 +5,7 @@ import { availableModul, isValidModul } from '@/common/data/PortalPraktikum'
 import ICPCScoreboardTable from '@/icpc/components/elements/ICPCScoreboardTable'
 import ScoreboardData from '@/icpc/types/ScoreboardData'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { FC, Fragment } from 'react'
+import { FC, Fragment, useEffect } from 'react'
 import clsx from 'clsx'
 import getContestSlugByModulAndKelas from '@/common/data/PortalPraktikum'
 import { NextSeo } from 'next-seo'
@@ -34,6 +34,10 @@ const PraktikumScoreboard: FC<Props> = ({
   sessionIndex,
 }) => {
   const router = useRouter()
+
+  useEffect(() => {
+    router.prefetch('/scoreboard/[modul]/[kelas]/[session]')
+  })
 
   return (
     <>
