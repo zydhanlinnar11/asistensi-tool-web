@@ -245,10 +245,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     const modulIndex = modul.findIndex((mdl) => mdl == currModul)
     if (modulIndex === -1) return { notFound: true }
 
-    if (session == 'revisi' && currModul == '3')
-      return {
-        notFound: true,
-      }
+    // if (session == 'revisi' && currModul == '3')
+    //   return {
+    //     notFound: true,
+    //   }
 
     return {
       props: { ...data, sessionIndex, kelasIndex, modulIndex },
