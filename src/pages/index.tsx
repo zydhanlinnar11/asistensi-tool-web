@@ -9,7 +9,7 @@ export default HomePage
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     redirect: {
-      destination: '/scoreboard/3/a/revisi',
+      destination: '/scoreboard/4/a/revisi',
       permanent: false,
     },
   }

@@ -23,7 +23,7 @@ type Props = {
 }
 
 const kelas = ['a', 'b', 'c', 'e', 'f', 'iup']
-const modul = ['1', '2', '3']
+const modul = ['1', '2', '3', '4']
 const sessions = ['praktikum', 'revisi']
 
 const PraktikumScoreboard: FC<Props> = ({
