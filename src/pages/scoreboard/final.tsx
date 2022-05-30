@@ -53,15 +53,14 @@ const PraktikumScoreboard: FC<Props> = ({ data, lastUpdated }) => {
           {data ? data.contest.name : 'Loading'}
         </h1>
         <p className="text-slate-400 mt-2">Last updated: {lastUpdated}</p>
+        <p className="text-slate-400 mt-2">
+          Updated every 10 minutes (sorry for bad CSS skill, XD)
+        </p>
       </header>
-      <main className="max-w-full">
-        <div className="w-fit mx-auto">
-          <ICPCScoreboardTable
-            problems={data ? data.problems : []}
-            teams={data ? data.teams : []}
-          />
-        </div>
-      </main>
+      <ICPCScoreboardTable
+        problems={data ? data.problems : []}
+        teams={data ? data.teams : []}
+      />
     </>
   )
 }
