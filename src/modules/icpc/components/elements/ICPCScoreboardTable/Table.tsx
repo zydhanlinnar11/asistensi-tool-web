@@ -5,10 +5,17 @@ import styles from '@/styles/Table.module.css'
 import clsx from 'clsx'
 import Image from 'next/image'
 import itsLogo from '../../../../../../public/img/logo-its.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faArrowDown,
+  faArrowUp,
+  faCircle,
+} from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   problems: Problem[]
   teams: Team[]
+  prevRank?: { [key: string]: number }
 }
 
 const getProgressClassName = (count: number, total: number) => {
@@ -16,7 +23,7 @@ const getProgressClassName = (count: number, total: number) => {
   return styles[`progress${progress}`]
 }
 
-const Table: FC<Props> = ({ problems, teams }) => {
+const Table: FC<Props> = ({ problems, teams, prevRank }) => {
   const totalProblems = problems.length
 
   return (
@@ -46,7 +53,35 @@ const Table: FC<Props> = ({ problems, teams }) => {
         {teams.map(({ id, institution, name, problems, score }, rank) => (
           <tr key={id}>
             <td className={styles.scoreTd} style={{ borderLeft: 'none' }}>
-              {rank + 1}
+              {rank + 1} (
+              {prevRank &&
+                (!(id in prevRank) || prevRank[id] > rank ? (
+                  <>
+                    <FontAwesomeIcon
+                      icon={faArrowUp}
+                      className="text-green-400 my-0"
+                    />
+                    <span className="text-green-400">
+                      &nbsp;{prevRank[id] - rank}
+                    </span>
+                  </>
+                ) : prevRank[id] === rank ? (
+                  <FontAwesomeIcon
+                    icon={faCircle}
+                    className="text-yellow-300 my-0"
+                  />
+                ) : (
+                  <>
+                    <FontAwesomeIcon
+                      icon={faArrowDown}
+                      className="text-red-400 my-0"
+                    />
+                    <span className="text-red-400">
+                      &nbsp;{rank - prevRank[id]}
+                    </span>
+                  </>
+                ))}
+              )
             </td>
             <td className={clsx(styles.scoreTd, styles.teamNameTd)}>
               <div className="flex gap-x-3 items-center pl-3 pr-8">

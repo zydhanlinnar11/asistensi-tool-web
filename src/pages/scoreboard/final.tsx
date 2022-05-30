@@ -11,13 +11,15 @@ import {
   getContestDataFromAPI,
   getScoreboardFromAPI,
 } from '@/modules/hackerrank/utils/HackerrankUtil'
+import db from '@/modules/icpc/utils/db'
 
 type Props = {
   data: ScoreboardData
   lastUpdated: string
+  prevRank: { [key: string]: number }
 }
 
-const PraktikumScoreboard: FC<Props> = ({ data, lastUpdated }) => {
+const PraktikumScoreboard: FC<Props> = ({ data, lastUpdated, prevRank }) => {
   const router = useRouter()
 
   useEffect(() => {
@@ -60,6 +62,7 @@ const PraktikumScoreboard: FC<Props> = ({ data, lastUpdated }) => {
       <ICPCScoreboardTable
         problems={data ? data.problems : []}
         teams={data ? data.teams : []}
+        prevRank={prevRank}
       />
     </>
   )
@@ -99,14 +102,30 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         })[0].problems[index].time ?? -1
     })
 
-    data.data.teams.forEach((team) => {
+    const prevRank: { [key: string]: number } = {}
+    const batch = db.batch()
+    ;(await db.collection('ds_2022_scoreboard_last_rank').get()).docs.forEach(
+      (doc) => {
+        prevRank[doc.data().id] = doc.data().rank
+        batch.delete(doc.ref)
+      }
+    )
+
+    data.data.teams.forEach((team, rank) => {
       team.problems.forEach((problem, index) => {
         problem.firstToSolve = problemsFirstSolverTime[index] === problem.time
       })
+      const docRef = db.collection('ds_2022_scoreboard_last_rank').doc()
+      batch.set(docRef, { id: team.id, rank })
     })
+    batch.commit().catch((e) => console.error(e))
 
     return {
-      props: { ...data },
+      props: {
+        data: data.data,
+        lastUpdated: 'a',
+        prevRank,
+      },
       revalidate: 600,
     }
   } catch (e) {
