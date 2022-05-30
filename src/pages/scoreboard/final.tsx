@@ -87,6 +87,24 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       lastUpdated,
     }
 
+    const { problems } = data.data
+    const problemsFirstSolverTime: { [key: string]: number } = {}
+    problems.forEach((problem, index) => {
+      const teams = [...data.data.teams]
+      problemsFirstSolverTime[index] =
+        teams.sort((a, b) => {
+          const aTime = a.problems[index].time || 1000000000
+          const bTime = b.problems[index].time || 1000000000
+          return aTime - bTime
+        })[0].problems[index].time ?? -1
+    })
+
+    data.data.teams.forEach((team) => {
+      team.problems.forEach((problem, index) => {
+        problem.firstToSolve = problemsFirstSolverTime[index] === problem.time
+      })
+    })
+
     return {
       props: { ...data },
       revalidate: 600,
