@@ -62,7 +62,10 @@ const Table: FC<Props> = ({ problems, teams, prevRank }) => {
                       className="text-green-400 my-0"
                     />
                     <span className="text-green-400">
-                      &nbsp;{prevRank[id] - rank}
+                      &nbsp;
+                      {!(id in prevRank)
+                        ? teams.length - rank
+                        : prevRank[id] - rank}
                     </span>
                   </>
                 ) : prevRank[id] === rank ? (
