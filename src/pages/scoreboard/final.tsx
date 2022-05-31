@@ -122,8 +122,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
     return {
       props: {
-        data: data.data,
-        lastUpdated: 'a',
+        ...data,
         prevRank,
       },
       revalidate: 600,
