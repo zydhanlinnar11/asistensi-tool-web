@@ -4,6 +4,7 @@ import ScoreboardData from '@/icpc/types/ScoreboardData'
 import HackerRankSubmissionModel from '@/hackerrank/types/HackerRankSubmissionModel'
 import HackerRankSubmission from '@/hackerrank/types/HackerRankSubmission'
 import { readFileSync, writeFileSync } from 'fs'
+import path from 'path'
 
 type GetScoreboardFromAPI = (
   contestSlug: string,
@@ -160,8 +161,8 @@ export const convertToICPCScoreboardData: ConvertToICPCScoreboardData = (
 export const getHackerName: (username: string) => Promise<string> = async (
   username
 ) => {
-  const fileName = './public/scoreboard/hackerrank-name.json'
-  const cached = JSON.parse(readFileSync(fileName).toString())
+  const filePath = path.resolve('./public/scoreboard/hackerrank-name.json')
+  const cached = JSON.parse(readFileSync(filePath).toString())
   if (username in cached) return cached[username]
   const res = await fetch(
     `https://www.hackerrank.com/rest/contests/master/hackers/${username}/profile`
@@ -169,7 +170,7 @@ export const getHackerName: (username: string) => Promise<string> = async (
   const json = await res.json()
   if (process.env.NODE_ENV === 'development') {
     cached[username] = json.model.name
-    writeFileSync(fileName, JSON.stringify(cached))
+    writeFileSync(filePath, JSON.stringify(cached))
   }
 
   return json.model.name
