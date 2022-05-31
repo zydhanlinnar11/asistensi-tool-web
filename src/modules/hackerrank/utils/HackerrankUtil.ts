@@ -26,8 +26,19 @@ export const getScoreboardFromAPI: GetScoreboardFromAPI = async (
     `https://www.hackerrank.com/rest/contests/${contestSlug}/leaderboard?limit=${paginationLimit}`
   )
   const json = await res.json()
+  const data = json
+  const pagesCount = Math.ceil(json.total / 10)
+  for (let i = 1; i < pagesCount; i++) {
+    const res = await fetch(
+      `https://www.hackerrank.com/rest/contests/${contestSlug}/leaderboard?limit=${paginationLimit}&offset=${
+        paginationLimit * i
+      }`
+    )
+    const json = await res.json()
+    data.models = [...data.models, ...json.models]
+  }
 
-  return json
+  return data
 }
 
 export const getContestDataFromAPI: GetContestDataFromAPI = async (

@@ -71,7 +71,7 @@ const PraktikumScoreboard: FC<Props> = ({ data, lastUpdated, prevRank }) => {
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const slug = getContestSlugByModulAndKelas('final', 'a')
 
-  const scoreboard = await getScoreboardFromAPI(slug, 100)
+  const scoreboard = await getScoreboardFromAPI(slug)
   const contest = await getContestDataFromAPI(slug)
   const names = await getAllHackerName(scoreboard)
   scoreboard.models = scoreboard.models.map((model) => ({
