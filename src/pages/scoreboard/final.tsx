@@ -69,67 +69,62 @@ const PraktikumScoreboard: FC<Props> = ({ data, lastUpdated, prevRank }) => {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  try {
-    const slug = getContestSlugByModulAndKelas('final', 'a')
+  const slug = getContestSlugByModulAndKelas('final', 'a')
 
-    const scoreboard = await getScoreboardFromAPI(slug, 100)
-    const contest = await getContestDataFromAPI(slug)
-    const names = await getAllHackerName(scoreboard)
-    scoreboard.models = scoreboard.models.map((model) => ({
-      ...model,
-      hacker: model.hacker in names ? names[model.hacker] : model.hacker,
-      school: 'Institut Teknologi Sepuluh Nopember',
-    }))
+  const scoreboard = await getScoreboardFromAPI(slug, 100)
+  const contest = await getContestDataFromAPI(slug)
+  const names = await getAllHackerName(scoreboard)
+  scoreboard.models = scoreboard.models.map((model) => ({
+    ...model,
+    hacker: model.hacker in names ? names[model.hacker] : model.hacker,
+    school: 'Institut Teknologi Sepuluh Nopember',
+  }))
 
-    const lastUpdated = new Date().toLocaleString('id-ID', {
-      timeZone: 'Asia/Jakarta',
-      hour12: true,
-    })
-    const data = {
-      data: convertToICPCScoreboardData(scoreboard, contest),
-      lastUpdated,
+  const lastUpdated = new Date().toLocaleString('id-ID', {
+    timeZone: 'Asia/Jakarta',
+    hour12: true,
+  })
+  const data = {
+    data: convertToICPCScoreboardData(scoreboard, contest),
+    lastUpdated,
+  }
+
+  const { problems } = data.data
+  const problemsFirstSolverTime: { [key: string]: number } = {}
+  problems.forEach((problem, index) => {
+    const teams = [...data.data.teams]
+    problemsFirstSolverTime[index] =
+      teams.sort((a, b) => {
+        const aTime = a.problems[index].time || 1000000000
+        const bTime = b.problems[index].time || 1000000000
+        return aTime - bTime
+      })[0].problems[index].time ?? -1
+  })
+
+  const prevRank: { [key: string]: number } = {}
+  const batch = db.batch()
+  ;(await db.collection('ds_2022_scoreboard_last_rank').get()).docs.forEach(
+    (doc) => {
+      prevRank[doc.data().id] = doc.data().rank
+      batch.delete(doc.ref)
     }
+  )
 
-    const { problems } = data.data
-    const problemsFirstSolverTime: { [key: string]: number } = {}
-    problems.forEach((problem, index) => {
-      const teams = [...data.data.teams]
-      problemsFirstSolverTime[index] =
-        teams.sort((a, b) => {
-          const aTime = a.problems[index].time || 1000000000
-          const bTime = b.problems[index].time || 1000000000
-          return aTime - bTime
-        })[0].problems[index].time ?? -1
+  data.data.teams.forEach((team, rank) => {
+    team.problems.forEach((problem, index) => {
+      problem.firstToSolve = problemsFirstSolverTime[index] === problem.time
     })
+    const docRef = db.collection('ds_2022_scoreboard_last_rank').doc()
+    batch.set(docRef, { id: team.id, rank })
+  })
+  batch.commit().catch((e) => console.error(e))
 
-    const prevRank: { [key: string]: number } = {}
-    const batch = db.batch()
-    ;(await db.collection('ds_2022_scoreboard_last_rank').get()).docs.forEach(
-      (doc) => {
-        prevRank[doc.data().id] = doc.data().rank
-        batch.delete(doc.ref)
-      }
-    )
-
-    data.data.teams.forEach((team, rank) => {
-      team.problems.forEach((problem, index) => {
-        problem.firstToSolve = problemsFirstSolverTime[index] === problem.time
-      })
-      const docRef = db.collection('ds_2022_scoreboard_last_rank').doc()
-      batch.set(docRef, { id: team.id, rank })
-    })
-    batch.commit().catch((e) => console.error(e))
-
-    return {
-      props: {
-        ...data,
-        prevRank,
-      },
-      revalidate: 600,
-    }
-  } catch (e) {
-    console.error(e)
-    return { notFound: true }
+  return {
+    props: {
+      ...data,
+      prevRank,
+    },
+    revalidate: 600,
   }
 }
 
